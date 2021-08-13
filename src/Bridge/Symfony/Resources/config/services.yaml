@@ -1,0 +1,109 @@
+parameters:
+  pixel_federation_circuit_breaker.proxy_cache_dir: '%kernel.cache_dir%/pixelfederation/cicruit_breaker'
+  pixel_federation_circuit_breaker.cache_namespace: 'pf_cicruit_breaker'
+
+services:
+  pixel_federation_circuit_breaker.array_cache_item_pool:
+    class: Symfony\Component\Cache\Adapter\ArrayAdapter
+
+  pixel_federation_circuit_breaker.circuit_breaker.cache_item_pool:
+    class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+    arguments:
+      $namespace: '%pixel_federation_circuit_breaker.cache_namespace%'
+      $defaultLifetime: 0
+      $directory: '%pixel_federation_circuit_breaker.proxy_cache_dir%'
+
+  pixel_federation_circuit_breaker.circuit_breaker.cache:
+    class: Symfony\Component\Cache\Psr16Cache
+    arguments:
+      $pool: !service
+        class: Symfony\Component\Cache\Adapter\ChainAdapter
+        arguments:
+          $adapters:
+            - '@pixel_federation_circuit_breaker.array_cache_item_pool'
+            - '@pixel_federation_circuit_breaker.circuit_breaker.cache_item_pool'
+
+  PixelFederation\CircuitBreakerBundle\MethodExtractor: '@PixelFederation\CircuitBreakerBundle\ReflectionMethodExtractor'
+
+  PixelFederation\CircuitBreakerBundle\CachedMethodExtractor:
+    decorates: PixelFederation\CircuitBreakerBundle\MethodExtractor
+    arguments:
+      $decorated: '@PixelFederation\CircuitBreakerBundle\CachedMethodExtractor.inner'
+      $cache: '@pixel_federation_circuit_breaker.circuit_breaker.cache'
+
+  PixelFederation\CircuitBreakerBundle\ReflectionMethodExtractor:
+    arguments:
+      $annotationsReader: '@Doctrine\Common\Annotations\Reader'
+      $serviceClasses: [ ]
+
+  PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command\GenerateCircuitBrokenProxiesCacheClearer:
+    arguments:
+      $cache: '@pixel_federation_circuit_breaker.circuit_breaker.cache'
+      $cacheDirectory: '%pixel_federation_circuit_breaker.proxy_cache_dir%'
+      $filesystem: !service
+        class: Symfony\Component\Filesystem\Filesystem
+    tags:
+      - { name: kernel.cache_clearer }
+
+  PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command\GenerateCircuitBrokenProxiesCacheWarmer:
+    arguments:
+      $proxyGenerator: '@PixelFederation\CircuitBreakerBundle\Generator'
+    tags:
+      - { name: kernel.cache_warmer }
+
+  pixel_federation_circuit_breaker.circuit_breaker.service_proxy_configuration:
+    class: ProxyManager\Configuration
+    calls:
+      - [ 'setGeneratorStrategy', [ '@pixel_federation_circuit_breaker.circuit_breaker.proxy_file_writer_generator' ] ]
+      - [ 'setProxiesTargetDir', [ '%pixel_federation_circuit_breaker.proxy_cache_dir%' ] ]
+
+  pixel_federation_circuit_breaker.circuit_breaker.proxy_file_writer_generator:
+    class: ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy
+    arguments:
+      $fileLocator: '@pixel_federation_circuit_breaker.circuit_breaker.proxy_file_locator'
+
+  pixel_federation_circuit_breaker.circuit_breaker.proxy_file_locator:
+    class: ProxyManager\FileLocator\FileLocator
+    lazy: true # unable to instantiate when directory does not exist
+    arguments:
+      $proxiesDirectory: '%pixel_federation_circuit_breaker.proxy_cache_dir%'
+
+  PixelFederation\CircuitBreakerBundle\Generator:
+    arguments:
+      $configuration: '@pixel_federation_circuit_breaker.circuit_breaker.service_proxy_configuration'
+      $methodExtractor: '@PixelFederation\CircuitBreakerBundle\MethodExtractor'
+
+  PixelFederation\CircuitBreakerBundle\Instantiator:
+    arguments:
+      $methodExtractor: '@PixelFederation\CircuitBreakerBundle\MethodExtractor'
+      $proxyGenerator: '@PixelFederation\CircuitBreakerBundle\Generator'
+      $circuitBreaker: '@PixelFederation\CircuitBreakerBundle\CircuitBreaker'
+
+  PixelFederation\CircuitBreakerBundle\CircuitBreaker: '@PixelFederation\CircuitBreakerBundle\Bridge\Ganesha\GaneshaCircuitBreaker'
+
+  PixelFederation\CircuitBreakerBundle\Bridge\Ganesha\GaneshaCircuitBreaker:
+    arguments:
+      $ganesha: '@pixel_federation_circuit_breaker.ganesha'
+
+  pixel_federation_circuit_breaker.ganesha_adapter:
+    class: 'Ackintosh\Ganesha\Storage\Adapter\Apcu'
+    arguments:
+      $apcuStore: '@pixel_federation_circuit_breaker.ganesha_adapter_store'
+
+  pixel_federation_circuit_breaker.ganesha_adapter_store:
+    class: 'Ackintosh\Ganesha\Storage\Adapter\ApcuStore'
+
+  pixel_federation_circuit_breaker.ganesha:
+    class: 'Ackintosh\Ganesha'
+    lazy: true
+    factory: [ '@pixel_federation_circuit_breaker.ganesha_builder', 'build' ]
+
+  pixel_federation_circuit_breaker.ganesha_builder:
+    class: Ackintosh\Ganesha\Strategy\Rate\Builder
+    factory: [ 'Ackintosh\Ganesha\Builder', 'withRateStrategy' ]
+    calls:
+      - adapter: [ '@pixel_federation_circuit_breaker.ganesha_adapter' ]
+      - failureRateThreshold: [ 25 ]
+      - intervalToHalfOpen: [ 5 ]
+      - minimumRequests: [ 5 ]
+      - timeWindow: [ 10 ]

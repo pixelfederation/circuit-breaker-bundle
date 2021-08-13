@@ -1,0 +1,11 @@
+parameters:
+  level: max
+  ignoreErrors:
+#    - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)#'
+#    - '#Cannot call method end\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null#'
+
+  excludes_analyse:
+    - '%rootDir%/../../../tests/*'
+    - '%rootDir%/../../../src/DependencyInjection'
+
+  typeAliases:

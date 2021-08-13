@@ -1,0 +1,10 @@
+imports:
+  - { resource: framework.yaml }
+  - { resource: parameters.yaml }
+
+monolog:
+  handlers:
+    main:
+      type: stream
+      path:  "php://stderr" # uncomment if you would like to see logs in console
+      level: debug

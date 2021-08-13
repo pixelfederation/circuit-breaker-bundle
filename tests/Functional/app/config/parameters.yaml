@@ -1,0 +1,2 @@
+parameters:
+  'env(APP_DEBUG)': 'true'

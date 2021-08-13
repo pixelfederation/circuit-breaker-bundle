@@ -1,0 +1,20 @@
+imports:
+  - {resource: ../../config/default-config.yaml}
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\TestService:
+    public: true
+    arguments:
+      $logger: '@logger'
+
+  pixel_federation_circuit_breaker.ganesha.spy:
+    class: 'PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\GaneshaSpy'
+    decorates: 'pixel_federation_circuit_breaker.ganesha'
+    lazy: true
+    arguments:
+      $decorated: '@pixel_federation_circuit_breaker.ganesha.spy.inner'

@@ -1,0 +1,18 @@
+version: '3.3'
+
+# as root run: chown www-data:www-data /srv/www
+# and then
+# https://medium.com/@marickvantuil/speed-up-docker-for-mac-with-mutagen-14c2a2c9cba7
+# mutagen project start
+# to disable syncing run `mutagen project terminate`
+# in PHPSTORM use a custom Docker container for quality tools with this volume mapping:
+# server-circuit-breaker-bundle_circuit_breaker_bundle_volume:/srv/www
+# until it is possible to use PHP from docker-compose in quality tools again
+volumes:
+    circuit_breaker_bundle_volume: {}
+
+services:
+  # PHP
+  circuit-breaker-bundle-php7:
+    volumes:
+      - circuit_breaker_bundle_volume:/srv/www

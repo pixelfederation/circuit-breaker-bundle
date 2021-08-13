@@ -1,0 +1,8 @@
+/.idea/
+/vendor/
+.php_cs.cache
+.php-cs-fixer.cache
+.phpunit.result.cache
+.env
+docker-compose.override.yml
+mutagen.yml.lock

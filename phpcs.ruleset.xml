@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ruleset name="PixelFederation">
+
+  <description>PixelFederation rule set.</description>
+
+  <config name="testVersion" value="7.4"/><!-- insert your php version -->
+  <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.xml">
+    <exclude name="SlevomatCodingStandard.ControlStructures.DisallowEmpty"/>
+    <exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators"/>
+    <exclude name="SlevomatCodingStandard.Namespaces.DisallowGroupUse.DisallowedGroupUse"/>
+    <exclude name="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine.MultipleUsesPerLine"/>
+    <exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
+  </rule>
+
+  <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+    <properties>
+      <property name="rootNamespaces" type="array">
+        <element key="src" value="PixelFederation\CircuitBreakerBundle"/>
+      </property>
+    </properties>
+  </rule>
+
+</ruleset>
