@@ -82,6 +82,15 @@ class Service {
 
 The fallback methods have to be public as well.
 
+**IMPORTANT:** Fallback methods have to have the same method signature as the fallbackable methods, because fallback
+methods are being called with the same arguments.
+
+**NOTICE REGARDING COMPLEX SCENARIOS:** It is also possible to define fallback methods for fallback methods 
+in some more complex scenarios. An example of such scenario might be, when there is an API call in the default/fallbackable
+method. It's fallback method might have a different call to a different API, which means, that such method could use 
+a fallback as well. In that case it can have configured a fallback method which tries to load data from some cache.
+Such a method might also use a fallback method which might return some default value.
+
 ## Full example
 
 ```php
@@ -143,6 +152,7 @@ class TestService implements CircuitBrokenService
         return 1; // ideally there is no call to any external dependency in the fallback method
     }
     
+    // notice that this fallback method has the same method signature as the method makeRequestWithCustomCircuitBreaker
     public function makeSpecialFallbackRequest(string $param): void
     {
         return 0; // ideally there is no call to any external dependency in the fallback method
