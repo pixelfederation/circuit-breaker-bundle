@@ -1,0 +1,4 @@
+exec '/usr/bin/git' 'rev-parse' '--show-toplevel'
+exec 'git' '--git-dir' '/srv/www/.git' '--work-tree' '/srv/www' 'diff' '-r' '-p' '-m' '-M' '--full-index' '--staged'
+exec '/usr/bin/git' 'rev-parse' '--show-toplevel'
+exec 'git' '--git-dir' '/srv/www/.git' '--work-tree' '/srv/www' 'diff' '-r' '-p' '-m' '-M' '--full-index' '--staged'
