@@ -40,6 +40,7 @@ grumphp:
       triggered_by: [ php ]
     phplint:
       exclude: [ 'vendor' ]
+      ignore_patterns: [ 'vendor/' ]
     phpunit: ~
     phpversion: ~
     shell: ~
