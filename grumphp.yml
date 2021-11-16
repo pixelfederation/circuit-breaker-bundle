@@ -15,7 +15,7 @@ grumphp:
     phpmd:
       ruleset: [ 'phpmd.ruleset.xml' ]
     phpcsfixer2:
-      cache_file: '.php-cs-fixer.php.cache'
+      cache_file: '.php-cs-fixer.cache'
       allow_risky: true
       config: '.php-cs-fixer.php'
       using_cache: true
