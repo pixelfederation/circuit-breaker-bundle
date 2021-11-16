@@ -38,7 +38,8 @@ grumphp:
           blacklist:
             - 'Dumper::dump'
       triggered_by: [ php ]
-    phplint: ~
+    phplint:
+      exclude: [ 'vendor' ]
     phpunit: ~
     phpversion: ~
     shell: ~
