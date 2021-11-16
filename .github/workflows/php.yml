@@ -17,6 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
@@ -32,20 +37,12 @@ jobs:
 
       - name: Check PHP Version
         run: php -v
-        with:
-          php-version: ${{ matrix.php-versions }}
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
-        with:
-          php-version: ${{ matrix.php-versions }}
 
       - name: Check vendor licenses
         run: composer run-script lic-check
-        with:
-          php-version: ${{ matrix.php-versions }}
 
       - name: Run static analysis (GrumPHP)
         run: composer run-script grumphp
-        with:
-          php-version: ${{ matrix.php-versions }}
