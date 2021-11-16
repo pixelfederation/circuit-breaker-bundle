@@ -49,6 +49,7 @@ final class Generator extends AccessInterceptorValueHolderFactory
      * @param array<string, mixed> $proxyOptions @codingStandardsIgnoreLine
      * @return class-string<RealObjectType>
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @psalm-suppress PossiblyUnusedReturnValue
      */
     protected function generateProxy(string $className, array $proxyOptions = []): string
     {
