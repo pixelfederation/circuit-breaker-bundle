@@ -14,12 +14,6 @@
       "email": "mfris@pixelfederation.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://satis.pxfd.tech"
-    }
-  ],
   "require": {
     "php": ">=7.4",
     "ackintosh/ganesha": "^2.0",
