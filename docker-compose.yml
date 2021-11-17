@@ -10,3 +10,12 @@ services:
     environment:
       - XDEBUG_CONFIG=idekey=PHPSTORM
       - COMPOSER_MEMORY_LIMIT=-1
+
+  circuit-breaker-bundle-php8:
+    container_name: circuit-breaker-bundle-php8
+    build: ./docker/php8
+    volumes:
+      - .:/srv/www:delegated
+    environment:
+      - XDEBUG_CONFIG=idekey=PHPSTORM
+      - COMPOSER_MEMORY_LIMIT=-1

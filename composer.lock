@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efb5a1f032903ee84f324be58aef9c4e",
+    "content-hash": "cade31e0d5a85286b6d3189a28e35f48",
     "packages": [
         {
             "name": "ackintosh/ganesha",
@@ -8696,7 +8696,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4"
+        "php": "^7.4"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

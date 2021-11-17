@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
+    "php": "^7.4",
     "ackintosh/ganesha": "^2.0",
     "beberlei/assert": "^3.3",
     "doctrine/annotations": "^1.12",
