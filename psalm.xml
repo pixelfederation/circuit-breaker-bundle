@@ -1,31 +1,33 @@
 <?xml version="1.0"?>
 <psalm
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="https://getpsalm.org/schema/config"
-        name="Psalm for CommandBus"
-        useDocblockTypes="true"
-        totallyTyped="true"
-        strictBinaryOperands="false"
-        rememberPropertyAssignmentsAfterCall="true"
-        checkForThrowsDocblock="false"
-        throwExceptionOnError="0"
-        findUnusedCode="true"
-        xsi:schemaLocation="https://getpsalm.org/schema/config config.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="https://getpsalm.org/schema/config"
+  name="Psalm for CommandBus"
+  useDocblockTypes="true"
+  totallyTyped="true"
+  strictBinaryOperands="false"
+  rememberPropertyAssignmentsAfterCall="true"
+  checkForThrowsDocblock="false"
+  throwExceptionOnError="0"
+  findUnusedCode="true"
+  xsi:schemaLocation="https://getpsalm.org/schema/config config.xsd"
 >
-    <projectFiles>
-        <directory name="src"/>
-        <ignoreFiles>
-            <directory name="tests"/>
-            <directory name="vendor"/>
-        </ignoreFiles>
-    </projectFiles>
+  <projectFiles>
+    <directory name="src"/>
+    <ignoreFiles>
+      <directory name="tests"/>
+      <directory name="vendor"/>
+    </ignoreFiles>
+  </projectFiles>
 
-    <ignoreExceptions>
-    </ignoreExceptions>
+  <ignoreExceptions>
+  </ignoreExceptions>
 
-    <plugins>
-    </plugins>
+  <plugins>
+  </plugins>
 
-    <issueHandlers>
-    </issueHandlers>
+  <issueHandlers>
+    <PossiblyUnusedMethod errorLevel="suppress"/>
+    <UnusedClass errorLevel="suppress"/>
+  </issueHandlers>
 </psalm>

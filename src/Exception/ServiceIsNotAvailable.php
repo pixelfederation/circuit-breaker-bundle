@@ -19,7 +19,7 @@ final class ServiceIsNotAvailable extends DomainException
     {
         return new self(
             sprintf(self::TEXT, $serviceName),
-            (int) $previous->getCode(),
+            (int) $previous->getCode(), /** @phpstan-ignore-line */
             $previous
         );
     }
