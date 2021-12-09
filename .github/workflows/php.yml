@@ -1,10 +1,14 @@
 name: PHP Composer
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
+
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+  contents: write
 
 jobs:
   build:
@@ -45,3 +49,24 @@ jobs:
 
       - name: Run static analysis (GrumPHP)
         run: composer run-script grumphp
+
+  dependabot:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Approve a dependabot PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Enable auto-merge for Dependabot PRs
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
