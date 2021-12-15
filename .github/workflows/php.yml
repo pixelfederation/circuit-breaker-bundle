@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [ '7.4' ] # , '8.0' PHP 8 is not supported yet
+        php-versions: [ '7.4', '8.0' ]
 
     steps:
       - uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
         run: composer run-script lic-check
 
       - name: Run static analysis (GrumPHP)
-        run: composer run-script grumphp
+        run: composer run-script grumphp${{ matrix.php-versions }}
 
   dependabot:
     needs: [ build ]

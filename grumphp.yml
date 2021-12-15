@@ -3,6 +3,29 @@ grumphp:
   process_timeout: 600
   git_hook_variables:
     EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -i circuit-breaker-bundle-php7'
+  testsuites:
+    php7.4:
+      tasks:
+        - phpcs
+        - phpmd
+        - phpcsfixer2
+        - phpparser
+        - phplint
+        - phpunit
+        - phpversion
+        - shell
+        - phpstan
+        - psalm
+    php8.0:
+      tasks:
+        - phpmd
+        - phpcsfixer2
+        - phpparser
+        - phpunit
+        - phpversion
+        - shell
+        - phpstan
+        - psalm
   tasks:
     phpcs:
       standard: 'phpcs.ruleset.xml'
@@ -41,7 +64,8 @@ grumphp:
     phplint:
       exclude: [ 'vendor' ]
     phpunit: ~
-    phpversion: ~
+    phpversion:
+      project: '7.4'
     shell: ~
     phpstan:
       autoload_file: ~
