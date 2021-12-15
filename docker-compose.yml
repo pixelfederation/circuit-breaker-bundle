@@ -7,6 +7,7 @@ services:
     build: ./docker/php
     volumes:
       - .:/srv/www:delegated
+      - ~/.composer:/root/.composer
     environment:
       - XDEBUG_CONFIG=idekey=PHPSTORM
       - COMPOSER_MEMORY_LIMIT=-1
@@ -16,6 +17,7 @@ services:
     build: ./docker/php8
     volumes:
       - .:/srv/www:delegated
+      - ~/.composer:/root/.composer
     environment:
       - XDEBUG_CONFIG=idekey=PHPSTORM
       - COMPOSER_MEMORY_LIMIT=-1

@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": "^7.4",
+    "php": ">=7.4",
     "ackintosh/ganesha": "^2.0",
     "beberlei/assert": "^3.3",
     "doctrine/annotations": "^1.12",
@@ -56,7 +56,8 @@
     "sort-packages": true
   },
   "scripts": {
-    "grumphp": "grumphp run",
+    "grumphp7.4": "grumphp run --testsuite=php7.4",
+    "grumphp8.0": "grumphp run --testsuite=php8.0",
     "lic-check": "license-checker check",
     "phpcs": "phpcs --standard=phpcs.ruleset.xml src",
     "phpcbf": "phpcbf --standard=phpcs.ruleset.xml --extensions=php --tab-width=4 -sp src tests",

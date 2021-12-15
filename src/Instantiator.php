@@ -85,6 +85,7 @@ final class Instantiator
             $serviceMethod,
             $serviceMethods
         ) {
+            $params = array_values($params); // fix for php 8 and named parameters
             /** @var Callable $callable */
             $callable = [$instance, $method];
             $invoker = static fn () => call_user_func_array($callable, $params);
