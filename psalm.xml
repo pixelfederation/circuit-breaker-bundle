@@ -4,6 +4,8 @@
   xmlns="https://getpsalm.org/schema/config"
   name="Psalm for CommandBus"
   useDocblockTypes="true"
+  errorLevel="1"
+  reportMixedIssues="true"
   strictBinaryOperands="false"
   rememberPropertyAssignmentsAfterCall="true"
   checkForThrowsDocblock="false"
