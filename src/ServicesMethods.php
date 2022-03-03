@@ -48,6 +48,6 @@ final class ServicesMethods implements IteratorAggregate
      */
     public function getIterator(): Traversable
     {
-        return new ArrayIterator($this->methods); /** @phpstan-ignore-line */ // phpcs:ignore
+        return new ArrayIterator($this->methods);
     }
 }

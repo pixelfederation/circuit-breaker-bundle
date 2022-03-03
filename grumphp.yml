@@ -2,7 +2,7 @@ grumphp:
   stop_on_failure: true
   process_timeout: 600
   git_hook_variables:
-    EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -i circuit-breaker-bundle-php7'
+    EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -t circuit-breaker-bundle-php7'
   testsuites:
     php7.4:
       tasks:

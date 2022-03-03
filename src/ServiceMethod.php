@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
 
-use Assert\Assert;
 use Throwable;
+use UnexpectedValueException;
 
 final class ServiceMethod
 {
@@ -47,10 +47,11 @@ final class ServiceMethod
      */
     public function getFallback(): string
     {
-        Assert::that($this->fallback)->notNull('FallbackMethod IS NULL');
+        if ($this->fallback === null) {
+            throw new UnexpectedValueException('Fallback was not specified.');
+        }
 
-        /** @psalm-suppress NullableReturnStatement */
-        return $this->fallback; /** @phpstan-ignore-line *///phpcs:ignore
+        return $this->fallback;
     }
 
     /**
