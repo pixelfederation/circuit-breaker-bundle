@@ -31,7 +31,6 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     *
      * @throws IOException
      */
     public static function tearDownAfterClass(): void
@@ -52,7 +51,6 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     *
      * @throws IOException
      */
     protected static function deleteTmpDir()
@@ -65,10 +63,7 @@ abstract class TestCase extends KernelTestCase
         $filesystem->remove($dir);
     }
 
-    /**
-     * @return string
-     */
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         require_once __DIR__ . '/app/AppKernel.php';
 
@@ -76,12 +71,9 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     * @param array $options
-     *
-     * @return mixed|KernelInterface
      * @throws InvalidArgumentException
      */
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         $class = self::getKernelClass();
 

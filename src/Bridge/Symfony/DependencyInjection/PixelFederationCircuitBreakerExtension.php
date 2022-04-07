@@ -24,6 +24,8 @@ final class PixelFederationCircuitBreakerExtension extends ConfigurableExtension
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container): void
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+
+        /** @psalm-suppress ReservedWord */
         $loader->load('services.yaml');
 
         $container->registerForAutoconfiguration(CircuitBrokenService::class)
