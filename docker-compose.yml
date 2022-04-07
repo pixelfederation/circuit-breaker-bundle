@@ -21,3 +21,13 @@ services:
     environment:
       - XDEBUG_CONFIG=idekey=PHPSTORM
       - COMPOSER_MEMORY_LIMIT=-1
+
+  circuit-breaker-bundle-php81:
+    container_name: circuit-breaker-bundle-php81
+    build: ./docker/php81
+    volumes:
+      - .:/srv/www:delegated
+      - ~/.composer:/root/.composer
+    environment:
+      - XDEBUG_CONFIG=idekey=PHPSTORM
+      - COMPOSER_MEMORY_LIMIT=-1

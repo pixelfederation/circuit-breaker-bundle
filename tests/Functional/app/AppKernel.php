@@ -51,7 +51,7 @@ final class AppKernel extends Kernel
      * @return mixed|\Symfony\Component\HttpKernel\Bundle\BundleInterface[]
      * @throws RuntimeException
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         if (!is_file($filename = $this->getProjectDir() . '/config/bundles.php')) {
             throw new RuntimeException(sprintf('The bundles file "%s" does not exist.', $filename));
@@ -60,26 +60,17 @@ final class AppKernel extends Kernel
         return include $filename;
     }
 
-    /**
-     * @return string
-     */
-    public function getProjectDir():string
+    public function getProjectDir(): string
     {
         return __DIR__;
     }
 
-    /**
-     * @return string
-     */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir() . '/' . $this->varDir . '/' . $this->testCase . '/cache/' . $this->environment;
     }
 
-    /**
-     * @return string
-     */
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return sys_get_temp_dir() . '/' . $this->varDir . '/' . $this->testCase . '/logs';
     }
@@ -116,10 +107,7 @@ final class AppKernel extends Kernel
         $this->__construct($data[0], $data[1], $data[2], $data[3], $data[4]);
     }
 
-    /**
-     * @return array
-     */
-    protected function getKernelParameters()
+    protected function getKernelParameters(): array
     {
         $parameters = parent::getKernelParameters();
         $parameters['kernel.test_case'] = $this->testCase;
