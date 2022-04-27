@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "ackintosh/ganesha",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ackintosh/ganesha.git",
-                "reference": "89660a4b29ad2ad75274ec8787daed4068692261"
+                "reference": "5792a96067edc1a14cd133c5132e1cee5ea2fadd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ackintosh/ganesha/zipball/89660a4b29ad2ad75274ec8787daed4068692261",
-                "reference": "89660a4b29ad2ad75274ec8787daed4068692261",
+                "url": "https://api.github.com/repos/ackintosh/ganesha/zipball/5792a96067edc1a14cd133c5132e1cee5ea2fadd",
+                "reference": "5792a96067edc1a14cd133c5132e1cee5ea2fadd",
                 "shasum": ""
             },
             "require": {
@@ -28,11 +28,12 @@
                 "ext-memcached": "~3.1",
                 "ext-mongodb": "~1.6",
                 "ext-redis": "~5.1",
+                "friendsofphp/php-cs-fixer": "^v3.1.0",
                 "guzzlehttp/guzzle": "~6.5",
                 "php-coveralls/php-coveralls": "~2.0",
                 "php-vcr/php-vcr": "^1.4.5",
                 "php-vcr/phpunit-testlistener-vcr": "dev-php8 as 3.2.2",
-                "phpunit/phpunit": "^9.5.4",
+                "phpunit/phpunit": "^9.5.10",
                 "predis/predis": "^1.1",
                 "symfony/http-client": "^4.3|^5.0",
                 "symfony/yaml": "^3.0|^4.0|^5.0",
@@ -71,7 +72,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ackintosh/ganesha/issues",
-                "source": "https://github.com/ackintosh/ganesha/tree/2.0.1"
+                "source": "https://github.com/ackintosh/ganesha/tree/2.0.2"
             },
             "funding": [
                 {
@@ -79,7 +80,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-25T23:35:49+00:00"
+            "time": "2022-04-26T13:43:09+00:00"
         },
         {
             "name": "beberlei/assert",
