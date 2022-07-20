@@ -8,3 +8,6 @@ monolog:
       type: stream
       path:  "php://stderr" # uncomment if you would like to see logs in console
       level: debug
+
+framework:
+  http_method_override: true
