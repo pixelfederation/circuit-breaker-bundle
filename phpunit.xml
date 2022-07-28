@@ -24,6 +24,7 @@
   </coverage>
   <php>
     <ini name="error_reporting" value="-1"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[indirect]=99999"/>
   </php>
   <listeners>
     <listener class="\Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
