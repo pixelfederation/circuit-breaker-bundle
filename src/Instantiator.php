@@ -14,6 +14,7 @@ use OutOfBoundsException;
 use PixelFederation\CircuitBreakerBundle\Exception\ServiceIsNotAvailable;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
+use ReflectionClass;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -26,6 +27,11 @@ final class Instantiator
     private Generator $proxyGenerator;
 
     private CircuitBreaker $circuitBreaker;
+
+    /**
+     * @var array<string, bool>
+     */
+    private array $variadicParamsCache = [];
 
     public function __construct(
         MethodExtractor $methodExtractor,
@@ -77,7 +83,7 @@ final class Instantiator
         return function (
             $proxy,
             object $instance,
-            $method,
+            string $method,
             array $params,
             &$returnEarly
         ) use (
@@ -85,7 +91,7 @@ final class Instantiator
             $serviceMethod,
             $serviceMethods
         ) {
-            $params = array_values($params); // fix for php 8 and named parameters
+            $params = $this->processInvokerParameters($instance, $method, $params);
             /** @var Callable $callable */
             $callable = [$instance, $method];
             $invoker = static fn () => call_user_func_array($callable, $params);
@@ -98,6 +104,47 @@ final class Instantiator
 
             return $result;
         };
+    }
+
+    /**
+     * if the last of the callback parameters is variadic, the parameters array needs to be changed accordingly
+     *
+     * @param array<mixed|iterable<mixed>> $params
+     * @return array<mixed>
+     */
+    private function processInvokerParameters(object $instance, string $method, array $params): array
+    {
+        $params = array_values($params); // fix for php 8 and named parameters
+
+        if (!$this->isLastMethodParamVariadic($instance, $method)) {
+            return $params;
+        }
+
+        /** @var iterable<mixed> $lastParam */
+        $lastParam = array_pop($params);
+
+        return [...$params, ...$lastParam];
+    }
+
+    private function isLastMethodParamVariadic(object $instance, string $method): bool
+    {
+        $cacheKey = sprintf('%s::%s', get_class($instance), $method);
+
+        if (isset($this->variadicParamsCache[$cacheKey])) {
+            return $this->variadicParamsCache[$cacheKey];
+        }
+
+        $reflClass = new ReflectionClass($instance);
+        $reflMethod = $reflClass->getMethod($method);
+        $methodParams = $reflMethod->getParameters();
+
+        if (empty($methodParams)) {
+            return false;
+        }
+
+        $lastMethodParam = array_pop($methodParams);
+
+        return $this->variadicParamsCache[$cacheKey] = $lastMethodParam->isVariadic();
     }
 
     /**
