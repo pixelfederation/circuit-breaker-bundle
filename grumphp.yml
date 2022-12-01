@@ -12,14 +12,12 @@ grumphp:
         - phpparser
         - phplint
         - phpunit
-        - phpversion
         - shell
         - phpstan
         - psalm
     php7.4-lowest:
       tasks:
         - phpunit
-        - phpversion
         - shell
     php8.0:
       tasks:
@@ -27,7 +25,6 @@ grumphp:
         - phpcsfixer2
         - phpparser
         - phpunit
-        - phpversion
         - shell
     php8.1:
       tasks:
@@ -35,7 +32,6 @@ grumphp:
         - phpcsfixer2
         - phpparser
         - phpunit
-        - phpversion
         - shell
   tasks:
     phpcs:
@@ -75,8 +71,6 @@ grumphp:
     phplint:
       exclude: [ 'vendor' ]
     phpunit: ~
-    phpversion:
-      project: '7.4'
     shell: ~
     phpstan:
       autoload_file: ~
