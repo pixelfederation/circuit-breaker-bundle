@@ -18,7 +18,7 @@
     "php": ">=7.4",
     "ackintosh/ganesha": "^2.0",
     "beberlei/assert": "^3.3",
-    "doctrine/annotations": "^1.12",
+    "doctrine/annotations": "^1.12|^2.0",
     "ocramius/proxy-manager": "^2.13",
     "psr/simple-cache": "^1.0|^2.0|^3.0",
     "symfony/cache": "^5.4|^6.0",
