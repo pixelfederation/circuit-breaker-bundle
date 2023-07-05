@@ -38,6 +38,11 @@ jobs:
             symfony-deprecations-helper: 'disabled=1&max[indirect]=99999'
             grumphp-flag: '-no-analyse'
             grumphp-testsuite: 'no-analyse'
+          - php-version: '8.1'
+            symfony-version: '6.3.*'
+            symfony-deprecations-helper: 'disabled=1&max[indirect]=99999'
+            grumphp-flag: '-no-analyse'
+            grumphp-testsuite: 'no-analyse'
 
     name: "PHP: ${{ matrix.php-version }}, Symfony: ${{ matrix.symfony-version }}, GrumPHP: ${{ matrix.grumphp-testsuite }}, Composer: ${{ matrix.composer-flag }}"
 
