@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
 
-use Psr\SimpleCache\CacheInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 final class CachedMethodExtractor implements MethodExtractor
 {
@@ -12,7 +12,7 @@ final class CachedMethodExtractor implements MethodExtractor
 
     public function __construct(
         private readonly MethodExtractor $decorated,
-        private readonly CacheInterface $cache,
+        private readonly CacheItemPoolInterface $cache,
     ) {
     }
 
@@ -25,16 +25,18 @@ final class CachedMethodExtractor implements MethodExtractor
 
     public function extractAll(): ServicesMethods
     {
-        if ($this->cache->has(self::CACHE_KEY)) {
+        $item = $this->cache->getItem(self::CACHE_KEY);
+
+        if ($item->isHit()) {
             /** @var ServicesMethods $methods */
-            $methods = $this->cache->get(self::CACHE_KEY);
+            $methods = $item->get();
 
             return $methods;
         }
 
         $methods = $this->decorated->extractAll();
-
-        $this->cache->set(self::CACHE_KEY, $methods);
+        $item->set($methods);
+        $this->cache->save($item);
 
         return $methods;
     }
