@@ -19,11 +19,9 @@
     "ackintosh/ganesha": "^2.0",
     "beberlei/assert": "^3.3",
     "doctrine/annotations": "^1.12|^2.0",
-    "ocramius/proxy-manager": "^2.13",
-    "psr/simple-cache": "^1.0|^2.0|^3.0",
-    "symfony/cache": "^5.4|^6.2",
-    "symfony/framework-bundle": "^5.4|^6.2",
-    "symfony/proxy-manager-bridge": "^5.4|^6.2"
+    "symfony/cache": "^5.4.24|^6.2",
+    "symfony/framework-bundle": "^5.4.24|^6.2",
+    "symfony/proxy-manager-bridge": "^5.4.21|^6.2"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.2",
@@ -35,12 +33,12 @@
     "phpro/grumphp": "^1.5",
     "phpstan/phpstan": "^1.1",
     "phpunit/phpunit": "^9.5",
-    "pixelfederation/coding-standards": "^2.0",
+    "pixelfederation/coding-standards": "^2.1",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^3.4",
     "symfony/flex": "^2.3",
     "symfony/monolog-bundle": "^3.7",
-    "symfony/phpunit-bridge": "^5.4|^6.2",
+    "symfony/phpunit-bridge": "^5.4.25|^6.2",
     "vimeo/psalm": "^5.0"
   },
   "autoload": {
@@ -63,7 +61,7 @@
   },
   "extra": {
     "symfony": {
-      "require": "6.2.*",
+      "require": "5.4.*",
       "docker": false
     }
   },

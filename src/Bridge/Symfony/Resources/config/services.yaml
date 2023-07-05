@@ -14,14 +14,11 @@ services:
       $directory: '%pixel_federation_circuit_breaker.proxy_cache_dir%'
 
   pixel_federation_circuit_breaker.circuit_breaker.cache:
-    class: Symfony\Component\Cache\Psr16Cache
+    class: Symfony\Component\Cache\Adapter\ChainAdapter
     arguments:
-      $pool: !service
-        class: Symfony\Component\Cache\Adapter\ChainAdapter
-        arguments:
-          $adapters:
-            - '@pixel_federation_circuit_breaker.array_cache_item_pool'
-            - '@pixel_federation_circuit_breaker.circuit_breaker.cache_item_pool'
+      $adapters:
+        - '@pixel_federation_circuit_breaker.array_cache_item_pool'
+        - '@pixel_federation_circuit_breaker.circuit_breaker.cache_item_pool'
 
   PixelFederation\CircuitBreakerBundle\MethodExtractor: '@PixelFederation\CircuitBreakerBundle\ReflectionMethodExtractor'
 
