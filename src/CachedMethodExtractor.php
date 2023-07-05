@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
@@ -14,14 +10,10 @@ final class CachedMethodExtractor implements MethodExtractor
 {
     private const CACHE_KEY = 'pixel_federation_circuit_breaker.circuit_breaker_methods';
 
-    private MethodExtractor $decorated;
-
-    private CacheInterface $cache;
-
-    public function __construct(MethodExtractor $decorated, CacheInterface $cache)
-    {
-        $this->decorated = $decorated;
-        $this->cache = $cache;
+    public function __construct(
+        private readonly MethodExtractor $decorated,
+        private readonly CacheInterface $cache,
+    ) {
     }
 
     public function extractFor(string $serviceClass): ServiceMethods

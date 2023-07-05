@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @author Juraj Surman <jsurman@pixelfederation.com>
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service;
@@ -22,16 +17,14 @@ use RuntimeException;
  */
 class TestService implements CircuitBrokenService
 {
-    private LoggerInterface $logger;
-
     /**
      * @var array<string>
      */
     private array $calledMethodsWithArgs = [];
 
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     /**

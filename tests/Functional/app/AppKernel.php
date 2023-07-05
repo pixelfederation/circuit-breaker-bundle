@@ -1,13 +1,10 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Tests\Functional\app;
 
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Exception;
 use InvalidArgumentException;
 use RuntimeException;
@@ -17,22 +14,23 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class AppKernel extends Kernel
 {
-    private string $varDir;
+    private readonly string $testCase;
 
-    private string $testCase;
-
-    private string $rootConfig;
+    private readonly string $rootConfig;
 
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $varDir, string $testCase, string $rootConfig, string $environment, bool $debug)
-    {
+    public function __construct(
+        private readonly string $varDir,
+        string $testCase,
+        string $rootConfig,
+        string $environment,
+        bool $debug
+    ) {
         if (!is_dir(__DIR__ . '/' . $testCase)) {
             throw new InvalidArgumentException(sprintf('The test case "%s" does not exist.', $testCase));
         }
-
-        $this->varDir = $varDir;
         $this->testCase = $testCase;
         $filesystem = new Filesystem();
 
@@ -48,7 +46,7 @@ final class AppKernel extends Kernel
     }
 
     /**
-     * @return mixed|\Symfony\Component\HttpKernel\Bundle\BundleInterface[]
+     * @return mixed|BundleInterface[]
      * @throws RuntimeException
      */
     public function registerBundles(): iterable
@@ -67,12 +65,12 @@ final class AppKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir() . '/' . $this->varDir . '/' . $this->testCase . '/cache/' . $this->environment;
+        return $this->varDir . '/' . $this->testCase . '/cache/' . $this->environment;
     }
 
     public function getLogDir(): string
     {
-        return sys_get_temp_dir() . '/' . $this->varDir . '/' . $this->testCase . '/logs';
+        return $this->varDir . '/' . $this->testCase . '/logs';
     }
 
     /**

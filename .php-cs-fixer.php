@@ -18,7 +18,6 @@ $config = (new PhpCsFixer\Config())
         PhpCsFixer\Finder::create()
             ->exclude('vendor')
             ->exclude('tests')
-            ->exclude('Hack')
             ->in(__DIR__)
     );
 

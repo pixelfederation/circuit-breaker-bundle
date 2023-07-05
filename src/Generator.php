@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
@@ -17,8 +13,6 @@ use ProxyManager\Version;
  */
 final class Generator extends AccessInterceptorValueHolderFactory
 {
-    private MethodExtractor $methodExtractor;
-
     /**
      * Cached checked class names
      *
@@ -26,10 +20,10 @@ final class Generator extends AccessInterceptorValueHolderFactory
      */
     private array $checkedClasses = [];
 
-    public function __construct(Configuration $configuration, MethodExtractor $methodExtractor)
-    {
-        $this->methodExtractor = $methodExtractor;
-
+    public function __construct(
+        Configuration $configuration,
+        private readonly MethodExtractor $methodExtractor,
+    ) {
         parent::__construct($configuration);
     }
 

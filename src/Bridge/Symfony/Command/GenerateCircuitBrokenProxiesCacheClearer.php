@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command;
@@ -14,17 +10,11 @@ use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
 
 final class GenerateCircuitBrokenProxiesCacheClearer implements CacheClearerInterface
 {
-    private PruneableInterface $cache;
-
-    private Filesystem $filesystem;
-
-    private string $cacheDirectory;
-
-    public function __construct(PruneableInterface $cache, Filesystem $filesystem, string $cacheDirectory)
-    {
-        $this->cache = $cache;
-        $this->filesystem = $filesystem;
-        $this->cacheDirectory = $cacheDirectory;
+    public function __construct(
+        private readonly PruneableInterface $cache,
+        private readonly Filesystem $filesystem,
+        private readonly string $cacheDirectory,
+    ) {
     }
 
     /**

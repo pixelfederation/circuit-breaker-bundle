@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Juraj Surman <jsurman@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
@@ -13,28 +9,19 @@ use Throwable;
 
 final class CircuitBreakerConfiguration
 {
-    private string $serviceName;
-
-    private ?string $defaultFallback;
-
-    /**
-     * @var array<int, class-string<Throwable>>
-     */
-    private array $ignoreExceptions;
-
     /**
      * @param array<int, class-string<Throwable>> $ignoreExceptions
      */
-    private function __construct(string $serviceName, ?string $defaultFallback, array $ignoreExceptions)
-    {
-        $this->serviceName = $serviceName;
-        $this->defaultFallback = $defaultFallback;
-        $this->ignoreExceptions = $ignoreExceptions;
+    private function __construct(
+        private readonly string $serviceName,
+        private readonly ?string $defaultFallback,
+        private readonly array $ignoreExceptions,
+    ) {
     }
 
     public static function fromAnnotation(
         string $serviceClass,
-        CircuitBreakerService $annotation
+        CircuitBreakerService $annotation,
     ): CircuitBreakerConfiguration {
         $serviceName = $annotation->getServiceName() ?? $serviceClass;
 

@@ -10,4 +10,4 @@ sync:
       defaultDirectoryMode: 755
   circuitbreakerbundle:
     alpha: "."
-    beta: "docker://root@circuit-breaker-bundle-php74/srv/www"
+    beta: "docker://root@circuit-breaker-bundle-php81/srv/www"

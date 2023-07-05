@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- * @author Juraj Surman <jsurman@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
@@ -19,24 +14,18 @@ use Traversable;
 final class ServiceMethods implements IteratorAggregate
 {
     /**
-     * @var class-string<CircuitBrokenService>
-     */
-    private string $class;
-
-    private CircuitBreakerConfiguration $configuration;
-
-    /**
      * @var array<array-key, ServiceMethod>
      */
-    private array $methods;
+    private readonly array $methods;
 
     /**
      * @param class-string<CircuitBrokenService> $class
      */
-    public function __construct(string $class, CircuitBreakerConfiguration $configuration, ServiceMethod ...$methods)
-    {
-        $this->class = $class;
-        $this->configuration = $configuration;
+    public function __construct(
+        private readonly string $class,
+        private readonly CircuitBreakerConfiguration $configuration,
+        ServiceMethod ...$methods,
+    ) {
         $this->methods = $methods;
     }
 
