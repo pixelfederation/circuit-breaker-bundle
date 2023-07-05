@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Juraj Surman <jsurman@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Annotation;
@@ -17,12 +13,12 @@ use Throwable;
  */
 final class CircuitBreaker
 {
-    private ?string $fallbackMethod;
+    private readonly ?string $fallbackMethod;
 
     /**
      * @var array<int, class-string<Throwable>>
      */
-    private array $ignoreExceptions;
+    private readonly array $ignoreExceptions;
 
     /**
      * @param array{

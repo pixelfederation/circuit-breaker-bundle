@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command;
@@ -13,11 +9,9 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 final class GenerateCircuitBrokenProxiesCacheWarmer implements CacheWarmerInterface
 {
-    private Generator $proxyGenerator;
-
-    public function __construct(Generator $proxyGenerator)
-    {
-        $this->proxyGenerator = $proxyGenerator;
+    public function __construct(
+        private readonly Generator $proxyGenerator,
+    ) {
     }
 
     public function isOptional(): bool

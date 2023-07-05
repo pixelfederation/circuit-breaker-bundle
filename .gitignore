@@ -6,3 +6,4 @@
 .env
 docker-compose.override.yml
 mutagen.yml.lock
+tests/Functional/app/var/*

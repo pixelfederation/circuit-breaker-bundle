@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- * @author Juraj Surman <jsurman@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
@@ -12,6 +7,7 @@ namespace PixelFederation\CircuitBreakerBundle;
 use Closure;
 use OutOfBoundsException;
 use PixelFederation\CircuitBreakerBundle\Exception\ServiceIsNotAvailable;
+use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ReflectionClass;
@@ -22,25 +18,16 @@ use ReflectionClass;
 // phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint
 final class Instantiator
 {
-    private MethodExtractor $methodExtractor;
-
-    private Generator $proxyGenerator;
-
-    private CircuitBreaker $circuitBreaker;
-
     /**
      * @var array<string, bool>
      */
     private array $variadicParamsCache = [];
 
     public function __construct(
-        MethodExtractor $methodExtractor,
-        Generator $proxyGenerator,
-        CircuitBreaker $circuitBreaker
+        private readonly MethodExtractor $methodExtractor,
+        private readonly Generator $proxyGenerator,
+        private readonly CircuitBreaker $circuitBreaker,
     ) {
-        $this->methodExtractor = $methodExtractor;
-        $this->proxyGenerator = $proxyGenerator;
-        $this->circuitBreaker = $circuitBreaker;
     }
 
     /**
@@ -50,7 +37,7 @@ final class Instantiator
      */
     public function newInstance(CircuitBrokenService $service): object
     {
-        $methods = $this->methodExtractor->extractFor(get_class($service));
+        $methods = $this->methodExtractor->extractFor($service::class);
         $callbacks = [];
 
         foreach ($methods as $method) {
@@ -64,33 +51,42 @@ final class Instantiator
         );
     }
 
+    // phpcs:disable Generic.Files.LineLength.TooLong
+    // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
     /**
+     * @return callable(CircuitBrokenService&AccessInterceptorInterface<CircuitBrokenService>=, CircuitBrokenService=, string=, array<string, mixed>=, bool=):mixed
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
+    // phpcs:enable
+    // phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint
     private function getCallback(
         ServiceMethod $serviceMethod,
         ServiceMethods $serviceMethods,
-        CircuitBreakerConfiguration $configuration
-    ): Closure {
+        CircuitBreakerConfiguration $configuration,
+    ): callable {
         // phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
         // phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedPassingByReference
+        // phpcs:disable Generic.Files.LineLength.TooLong
+        // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
         /**
          * @psalm-suppress MissingClosureParamType
          * @psalm-suppress MissingClosureReturnType
          * @psalm-suppress UnusedClosureParam
+         * @var callable(CircuitBrokenService&AccessInterceptorInterface<CircuitBrokenService>=, CircuitBrokenService=, string=, array<string, mixed>=, bool=):mixed $callback
          */
-
-        return function (
-            $proxy,
-            object $instance,
+        $callback = function (
+            CircuitBrokenService&AccessInterceptorInterface $proxy,
+            CircuitBrokenService $instance,
             string $method,
             array $params,
-            &$returnEarly
+            &$returnEarly,
         ) use (
             $configuration,
             $serviceMethod,
-            $serviceMethods
-        ) {
+            $serviceMethods,
+        ): mixed {
+            // phpcs:enable Generic.Files.LineLength.TooLong
+            // phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong
             $params = $this->processInvokerParameters($instance, $method, $params);
             /** @var Callable $callable */
             $callable = [$instance, $method];
@@ -104,12 +100,14 @@ final class Instantiator
 
             return $result;
         };
+
+        return $callback;
     }
 
     /**
      * if the last of the callback parameters is variadic, the parameters array needs to be changed accordingly
      *
-     * @param array<mixed|iterable<mixed>> $params
+     * @param array<mixed|array<mixed>> $params
      * @return array<mixed>
      */
     private function processInvokerParameters(object $instance, string $method, array $params): array
@@ -120,7 +118,7 @@ final class Instantiator
             return $params;
         }
 
-        /** @var iterable<mixed> $lastParam */
+        /** @var array<mixed> $lastParam */
         $lastParam = array_pop($params);
 
         return [...$params, ...$lastParam];
@@ -128,7 +126,7 @@ final class Instantiator
 
     private function isLastMethodParamVariadic(object $instance, string $method): bool
     {
-        $cacheKey = sprintf('%s::%s', get_class($instance), $method);
+        $cacheKey = sprintf('%s::%s', $instance::class, $method);
 
         if (isset($this->variadicParamsCache[$cacheKey])) {
             return $this->variadicParamsCache[$cacheKey];
@@ -155,9 +153,9 @@ final class Instantiator
         ServiceMethods $serviceMethods,
         CircuitBreakerConfiguration $configuration,
         object $instance,
-        array $params
+        array $params,
     ): Closure {
-        $fallback = static function (ServiceIsNotAvailable $e): void {
+        $fallback = static function (ServiceIsNotAvailable $e): never {
             throw $e;
         };
 
@@ -192,7 +190,7 @@ final class Instantiator
                 $invoker,
                 $fallback,
                 $configuration,
-                $circuitBrokenFallback
+                $circuitBrokenFallback,
             ) {
                 $configuration = $configuration->withIgnoreExceptions($circuitBrokenFallback->getIgnoredExceptions());
 

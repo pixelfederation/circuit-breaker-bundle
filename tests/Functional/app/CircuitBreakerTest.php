@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Tests\Tests\Functional\app;
@@ -33,7 +29,6 @@ final class CircuitBreakerTest extends TestCase
         array $expectedCalls,
         int $expectedFailures
     ): void {
-
         /** @var TestService $service */
         $service = self::getContainer()->get(TestService::class);
 

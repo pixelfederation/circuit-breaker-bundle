@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Tests\Functional;
@@ -55,7 +51,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected static function deleteTmpDir()
     {
-        if (!file_exists($dir = sys_get_temp_dir() . '/' . static::getVarDir())) {
+        if (!file_exists($dir = static::getVarDir())) {
             return;
         }
 
@@ -85,7 +81,7 @@ abstract class TestCase extends KernelTestCase
             static::getVarDir(),
             $options['test_case'],
             $options['root_config'] ?? 'config.yml',
-            $options['environment'] ?? strtolower(static::getVarDir() . $options['test_case']),
+            $options['environment'] ?? strtolower((string) $options['test_case']),
             $options['debug'] ?? true
         );
     }
@@ -120,6 +116,6 @@ abstract class TestCase extends KernelTestCase
 
     protected static function getVarDir(): string
     {
-        return 'PXFD_CBB_' . substr(strrchr(static::class, '\\'), 1);
+        return __DIR__ . '/app/var/' .  'PXFD_CBB_' . substr(strrchr(static::class, '\\'), 1);
     }
 }

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Bridge\Symfony\DependencyInjection;
@@ -11,7 +7,7 @@ namespace PixelFederation\CircuitBreakerBundle\Bridge\Symfony\DependencyInjectio
 use PixelFederation\CircuitBreakerBundle\CircuitBrokenService;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 final class PixelFederationCircuitBreakerExtension extends ConfigurableExtension
@@ -23,7 +19,7 @@ final class PixelFederationCircuitBreakerExtension extends ConfigurableExtension
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container): void
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         /** @psalm-suppress ReservedWord */
         $loader->load('services.yaml');

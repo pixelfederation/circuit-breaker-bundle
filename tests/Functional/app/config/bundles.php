@@ -1,13 +1,13 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
+use PixelFederation\CircuitBreakerBundle\Bridge\Symfony\PixelFederationCircuitBreakerBundle;
+
 return [
-    new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-    new Symfony\Bundle\MonologBundle\MonologBundle(),
-    new PixelFederation\CircuitBreakerBundle\Bridge\Symfony\PixelFederationCircuitBreakerBundle(),
+    new FrameworkBundle(),
+    new MonologBundle(),
+    new PixelFederationCircuitBreakerBundle(),
 ];

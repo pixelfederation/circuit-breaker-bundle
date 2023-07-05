@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service;
@@ -12,13 +8,11 @@ use Ackintosh\Ganesha;
 
 class GaneshaSpy extends Ganesha
 {
-    private Ganesha $decorated;
-
     private int $failureCallCount = 0;
 
-    public function __construct(Ganesha $decorated)
-    {
-        $this->decorated = $decorated;
+    public function __construct(
+        private readonly Ganesha $decorated
+    ) {
     }
 
     public function failure($service): void

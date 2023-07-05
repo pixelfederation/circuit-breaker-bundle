@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @author Martin Fris <mfris@pixelfederation.com>
- * @author Juraj Surman <jsurman@pixelfederation.com>
- */
-
 declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
@@ -12,6 +7,8 @@ namespace PixelFederation\CircuitBreakerBundle;
 use Assert\Assert;
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
+use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreaker;
+use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreakerService;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -22,20 +19,13 @@ use ReflectionNamedType;
  */
 final class ReflectionMethodExtractor implements MethodExtractor
 {
-    private Reader $annotationsReader;
-
-    /**
-     * @var iterable<class-string<CircuitBrokenService>>
-     */
-    private iterable $serviceClasses;
-
     /**
      * @param iterable<class-string<CircuitBrokenService>> $serviceClasses
      */
-    public function __construct(Reader $annotationsReader, iterable $serviceClasses)
-    {
-        $this->annotationsReader = $annotationsReader;
-        $this->serviceClasses = $serviceClasses;
+    public function __construct(
+        private readonly Reader $annotationsReader,
+        private readonly iterable $serviceClasses,
+    ) {
     }
 
     /**
@@ -74,16 +64,14 @@ final class ReflectionMethodExtractor implements MethodExtractor
      */
     private function extractServiceMethods(
         ReflectionClass $reflectionClass,
-        CircuitBreakerConfiguration $configuration
+        CircuitBreakerConfiguration $configuration,
     ): array {
         $publicMethods = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
 
         $serviceMethods = [];
         foreach ($publicMethods as $method) {
-            $methodAnnotation = $this->annotationsReader->getMethodAnnotation(
-                $method,
-                Annotation\CircuitBreaker::class
-            );
+            $methodAnnotation = $this->annotationsReader->getMethodAnnotation($method, CircuitBreaker::class);
+
             if ($methodAnnotation === null) {
                 continue;
             }
@@ -116,8 +104,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
     private function extractFallbackMethod(
         ReflectionClass $invokerReflClass,
         ReflectionMethod $invokerReflMethod,
-        Annotation\CircuitBreaker $methodAnnotation,
-        CircuitBreakerConfiguration $configuration
+        CircuitBreaker $methodAnnotation,
+        CircuitBreakerConfiguration $configuration,
     ): ?string {
         $fallbackMethod = $methodAnnotation->getFallbackMethod();
 
@@ -219,7 +207,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
      */
     private function validateRecursiveFallbackCalls(
         ReflectionClass $reflectionClass,
-        ServiceMethod ...$serviceMethods
+        ServiceMethod ...$serviceMethods,
     ): void {
         $methods = [];
         foreach ($serviceMethods as $serviceMethod) {
@@ -248,10 +236,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
      */
     private function createConfiguration(ReflectionClass $serviceClass): CircuitBreakerConfiguration
     {
-        $classAnnotation = $this->annotationsReader->getClassAnnotation(
-            $serviceClass,
-            Annotation\CircuitBreakerService::class
-        );
+        $classAnnotation = $this->annotationsReader->getClassAnnotation($serviceClass, CircuitBreakerService::class);
 
         if ($classAnnotation !== null) {
             return CircuitBreakerConfiguration::fromAnnotation($serviceClass->getName(), $classAnnotation);
