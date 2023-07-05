@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Tests\Tests\Functional\app;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\GaneshaSpy;
 use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\TestService;
 use PixelFederation\CircuitBreakerBundle\Tests\Functional\TestCase;
@@ -20,9 +21,7 @@ final class CircuitBreakerTest extends TestCase
         self::runCommand('cache:warmup --no-debug');
     }
 
-    /**
-     * @dataProvider dataProvider
-     */
+    #[DataProvider('dataProvider')]
     public function testCircuitBrokenService(
         string $method,
         ?string $argument,
@@ -46,7 +45,7 @@ final class CircuitBreakerTest extends TestCase
         self::assertSame($ganesha->getFailureCallCount(), $expectedFailures);
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             [
