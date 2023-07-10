@@ -33,7 +33,7 @@ The class mustn't be marked as `final`, because a proxy class is derived from it
 To configure circuit breaking, you can use the class level configuration or method level configuration.
 The class level configuration is valid for all the circuit-broken methods.
 It is configured as a class level annotation `@CircuitBreakerService`. To mark a public method as circuit broken, 
-the `@CircuitBreaker` annotation has to be used:
+the `@CircuitBreaker` annotation or attribute has to be used:
 
 ```php
 use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreakerService;
@@ -49,6 +49,22 @@ class Service {
     /**
      * @CircuitBreaker() 
      */
+    public function iShouldBeCircuitBroken(): int
+    {
+        return 0;
+    }
+}
+```
+
+or 
+
+```php
+use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreakerService;
+use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreaker;
+
+#[CircuitBreakerService(defaultFallback: 'makeDefaultFallbackRequest', ignoreExceptions: [BadMethodCallException::class])]
+class Service {
+    #[CircuitBreaker()]
     public function iShouldBeCircuitBroken(): int
     {
         return 0;
@@ -80,10 +96,27 @@ class Service {
 }
 ```
 
-The fallback methods have to be public as well.
+or 
+
+```php
+use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreaker;
+
+class Service {
+    #[CircuitBreaker(fallbackMethod: 'makeSpecialFallbackRequest')]
+    public function iShouldBeCircuitBroken(): int
+    {
+        return 0;
+    }
+}
+```
+
+The **fallback methods have to be public** as well.
 
 **IMPORTANT:** Fallback methods have to have the same method signature as the fallbackable methods, because fallback
 methods are being called with the same arguments.
+
+**IMPORTANT:** Doctrine annotations support will be dropped in the future, so it is recommended to use the bundle
+attributes instead.
 
 **NOTICE REGARDING COMPLEX SCENARIOS:** It is also possible to define fallback methods for fallback methods 
 in some more complex scenarios. An example of such scenario might be, when there is an API call in the default/fallbackable
