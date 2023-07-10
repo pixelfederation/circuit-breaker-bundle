@@ -12,4 +12,6 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
+      - dependency-name: "symfony/*"
+        update-types: [ "version-update:semver-minor" ]
     open-pull-requests-limit: 1
