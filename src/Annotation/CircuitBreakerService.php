@@ -4,37 +4,44 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Annotation;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Throwable;
 
 /**
  * @Annotation
  * @Annotation\Target("CLASS")
+ * @NamedArgumentConstructor
+ * @Annotation\Attributes({
+ * @Annotation\Attribute(
+ *     "serviceName",
+ *     type="string",
+ *     required=false
+ *   ),
+ * @Annotation\Attribute(
+ *     "defaultFallback",
+ *     type="string",
+ *     required=false
+ *   ),
+ * @Annotation\Attribute(
+ *     "ignoreExceptions",
+ *     type="array",
+ *     required=false
+ *   )
+ * })
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 final class CircuitBreakerService
 {
-    private readonly ?string $serviceName;
-
-    private readonly ?string $defaultFallback;
-
     /**
-     * @var array<int, class-string<Throwable>>
+     * @param array<int, class-string<Throwable>> $ignoreExceptions
      */
-    private readonly array $ignoreExceptions;
-
-    /**
-     * @param array{
-     *     value?: string,
-     *     serviceName?: string,
-     *     defaultFallback?: string,
-     *     ignoreExceptions?: array<int, class-string<Throwable>>
-     * } $values
-     */
-    public function __construct(array $values)
-    {
-        $this->serviceName = $values['value'] ?? $values['serviceName'] ?? null;
-        $this->defaultFallback = $values['defaultFallback'] ?? null;
-        $this->ignoreExceptions = $values['ignoreExceptions'] ?? [];
+    public function __construct(
+        private readonly ?string $serviceName = null,
+        private readonly ?string $defaultFallback = null,
+        private readonly array $ignoreExceptions = [],
+    ) {
     }
 
     public function getServiceName(): ?string

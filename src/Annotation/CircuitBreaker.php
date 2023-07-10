@@ -4,33 +4,38 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Annotation;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Throwable;
 
 /**
  * @Annotation
  * @Annotation\Target("METHOD")
+ * @NamedArgumentConstructor
+ * @Annotation\Attributes({
+ * @Annotation\Attribute(
+ *     "fallbackMethod",
+ *     type="string",
+ *     required=false
+ *   ),
+ * @Annotation\Attribute(
+ *     "ignoreExceptions",
+ *     type="array",
+ *     required=false
+ *   )
+ * })
  */
+#[Attribute(Attribute::TARGET_METHOD)]
 final class CircuitBreaker
 {
-    private readonly ?string $fallbackMethod;
-
     /**
-     * @var array<int, class-string<Throwable>>
+     * @param array<int, class-string<Throwable>> $ignoreExceptions
      */
-    private readonly array $ignoreExceptions;
-
-    /**
-     * @param array{
-     *     value?: string,
-     *     fallbackMethod?: string,
-     *     ignoreExceptions?: array<int, class-string<Throwable>>
-     * } $values
-     */
-    public function __construct(array $values)
-    {
-        $this->fallbackMethod = $values['value'] ?? $values['fallbackMethod'] ?? null;
-        $this->ignoreExceptions = $values['ignoreExceptions'] ?? [];
+    public function __construct(
+        private readonly ?string $fallbackMethod = null,
+        private readonly array $ignoreExceptions = [],
+    ) {
     }
 
     public function getFallbackMethod(): ?string

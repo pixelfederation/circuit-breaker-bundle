@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace PixelFederation\CircuitBreakerBundle;
 
 use Assert\Assert;
-use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreaker;
-use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreakerService;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -23,7 +21,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
      * @param iterable<class-string<CircuitBrokenService>> $serviceClasses
      */
     public function __construct(
-        private readonly Reader $annotationsReader,
+        private readonly MetadataReader $reader,
         private readonly iterable $serviceClasses,
     ) {
     }
@@ -70,7 +68,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
 
         $serviceMethods = [];
         foreach ($publicMethods as $method) {
-            $methodAnnotation = $this->annotationsReader->getMethodAnnotation($method, CircuitBreaker::class);
+            $methodAnnotation = $this->reader->getMethodMetadata($method);
 
             if ($methodAnnotation === null) {
                 continue;
@@ -144,7 +142,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
             throw new InvalidArgumentException(
                 sprintf(
                     'Fallback method %s::%s requires same count of input parameters. '
-                     . 'Expected %s, got %s. (Fallback for %s)',
+                    . 'Expected %s, got %s. (Fallback for %s)',
                     $invokerReflClass->getName(),
                     $fallbackMethod,
                     count($invokerParameters),
@@ -186,7 +184,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
                 throw new InvalidArgumentException(
                     sprintf(
                         'Parameter "%s" in fallback method %s::%s does not match. '
-                         . 'Expected %s, got %s. (Fallback for %s)',
+                        . 'Expected %s, got %s. (Fallback for %s)',
                         $fallbackParameter->getName(),
                         $invokerReflClass->getName(),
                         $fallbackMethod,
@@ -236,7 +234,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
      */
     private function createConfiguration(ReflectionClass $serviceClass): CircuitBreakerConfiguration
     {
-        $classAnnotation = $this->annotationsReader->getClassAnnotation($serviceClass, CircuitBreakerService::class);
+        $classAnnotation = $this->reader->getServiceMetadata($serviceClass);
 
         if ($classAnnotation !== null) {
             return CircuitBreakerConfiguration::fromAnnotation($serviceClass->getName(), $classAnnotation);
