@@ -6,7 +6,8 @@ namespace PixelFederation\CircuitBreakerBundle\Tests\Tests\Functional\app;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\GaneshaSpy;
-use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\TestService;
+use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\TestServiceWithAnnotations;
+use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\TestServiceWithAttributes;
 use PixelFederation\CircuitBreakerBundle\Tests\Functional\TestCase;
 
 final class CircuitBreakerTest extends TestCase
@@ -23,13 +24,14 @@ final class CircuitBreakerTest extends TestCase
 
     #[DataProvider('dataProvider')]
     public function testCircuitBrokenService(
+        string $serviceClass,
         string $method,
         ?string $argument,
         array $expectedCalls,
         int $expectedFailures
     ): void {
-        /** @var TestService $service */
-        $service = self::getContainer()->get(TestService::class);
+        /** @var TestServiceWithAnnotations|TestServiceWithAttributes $service */
+        $service = self::getContainer()->get($serviceClass);
 
         if ($argument !== null) {
             $service->{$method}($argument);
@@ -49,6 +51,7 @@ final class CircuitBreakerTest extends TestCase
     {
         return [
             [
+                TestServiceWithAnnotations::class,
                 'runWithStackedFallbacks',
                 null,
                 [
@@ -60,12 +63,40 @@ final class CircuitBreakerTest extends TestCase
                 3,
             ],
             [
+                TestServiceWithAnnotations::class,
                 'runWithDefaultFalback',
                 null,
                 ['runWithDefaultFalback', 'defaultFallback'],
                 1,
             ],
             [
+                TestServiceWithAnnotations::class,
+                'runWithIgnoredFallback',
+                'abc',
+                ['runWithIgnoredFallback:abc', 'fallback:abc', 'fallbackForFallback:abc', 'lastFallback:abc'],
+                2,
+            ],
+            [
+                TestServiceWithAttributes::class,
+                'runWithStackedFallbacks',
+                null,
+                [
+                    'runWithStackedFallbacks:something',
+                    'fallback:something',
+                    'fallbackForFallback:something',
+                    'lastFallback:something'
+                ],
+                3,
+            ],
+            [
+                TestServiceWithAttributes::class,
+                'runWithDefaultFalback',
+                null,
+                ['runWithDefaultFalback', 'defaultFallback'],
+                1,
+            ],
+            [
+                TestServiceWithAttributes::class,
                 'runWithIgnoredFallback',
                 'abc',
                 ['runWithIgnoredFallback:abc', 'fallback:abc', 'fallbackForFallback:abc', 'lastFallback:abc'],

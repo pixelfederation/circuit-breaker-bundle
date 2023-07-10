@@ -7,6 +7,7 @@ use Ackintosh\Ganesha\Storage\Adapter\Apcu;
 use Ackintosh\Ganesha\Storage\Adapter\ApcuStore;
 use Ackintosh\Ganesha\Strategy\Rate\Builder;
 use Doctrine\Common\Annotations\Reader;
+use PixelFederation\CircuitBreakerBundle\AnnotationMetadataReader;
 use PixelFederation\CircuitBreakerBundle\Bridge\Ganesha\GaneshaCircuitBreaker;
 use PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command\GenerateCircuitBrokenProxiesCacheClearer;
 use PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command\GenerateCircuitBrokenProxiesCacheWarmer;
@@ -14,6 +15,7 @@ use PixelFederation\CircuitBreakerBundle\CachedMethodExtractor;
 use PixelFederation\CircuitBreakerBundle\CircuitBreaker;
 use PixelFederation\CircuitBreakerBundle\Generator;
 use PixelFederation\CircuitBreakerBundle\Instantiator;
+use PixelFederation\CircuitBreakerBundle\MetadataReader;
 use PixelFederation\CircuitBreakerBundle\MethodExtractor;
 use PixelFederation\CircuitBreakerBundle\ReflectionMethodExtractor;
 use ProxyManager\Configuration;
@@ -53,6 +55,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         service('pixel_federation_circuit_breaker.circuit_breaker.cache_item_pool'),
     ]);
 
+    $services->alias(MetadataReader::class, AnnotationMetadataReader::class);
+
+    $services->set(AnnotationMetadataReader::class)
+        ->arg('$annotationsReader', service(Reader::class));
+
     $services->alias(MethodExtractor::class, ReflectionMethodExtractor::class);
 
     $services->set(CachedMethodExtractor::class)
@@ -61,7 +68,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$cache', service('pixel_federation_circuit_breaker.circuit_breaker.cache'));
 
     $services->set(ReflectionMethodExtractor::class)
-        ->arg('$annotationsReader', service(Reader::class))
+        ->arg('$reader', service(MetadataReader::class))
         ->arg('$serviceClasses', [
     ]);
 

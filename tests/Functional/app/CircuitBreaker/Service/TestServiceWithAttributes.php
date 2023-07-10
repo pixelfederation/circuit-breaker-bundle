@@ -12,10 +12,8 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
-/**
- * @CircuitBreakerService(defaultFallback="defaultFallback", ignoreExceptions={BadMethodCallException::class})
- */
-class TestService implements CircuitBrokenService
+#[CircuitBreakerService(defaultFallback: 'defaultFallback', ignoreExceptions: [BadMethodCallException::class])]
+class TestServiceWithAttributes implements CircuitBrokenService
 {
     /**
      * @var array<string>
@@ -27,9 +25,7 @@ class TestService implements CircuitBrokenService
     ) {
     }
 
-    /**
-     * @CircuitBreaker()
-     */
+    #[CircuitBreaker]
     public function runWithDefaultFalback(): void
     {
         $this->logger->debug(__FUNCTION__);
@@ -37,9 +33,7 @@ class TestService implements CircuitBrokenService
         throw new InvalidArgumentException(__FUNCTION__);
     }
 
-    /**
-     * @CircuitBreaker(fallbackMethod="fallback")
-     */
+    #[CircuitBreaker(fallbackMethod: 'fallback')]
     public function runWithStackedFallbacks(string $withSomething = 'something'): void
     {
         $this->logger->debug(__FUNCTION__);
@@ -47,9 +41,7 @@ class TestService implements CircuitBrokenService
         throw new InvalidArgumentException(__FUNCTION__);
     }
 
-    /**
-     * @CircuitBreaker(fallbackMethod="fallback", ignoreExceptions={\RuntimeException::class})
-     */
+    #[CircuitBreaker(fallbackMethod: 'fallback', ignoreExceptions: [RuntimeException::class])]
     public function runWithIgnoredFallback(string $withSomething = 'something'): void
     {
         $this->logger->debug(__FUNCTION__);
@@ -57,9 +49,7 @@ class TestService implements CircuitBrokenService
         throw new RuntimeException(__FUNCTION__);
     }
 
-    /**
-     * @CircuitBreaker(fallbackMethod="fallbackForFallback")
-     */
+    #[CircuitBreaker(fallbackMethod: 'fallbackForFallback')]
     public function fallback(string $what): void
     {
         $this->logger->debug(__FUNCTION__);
@@ -67,9 +57,7 @@ class TestService implements CircuitBrokenService
         throw new InvalidArgumentException(__FUNCTION__);
     }
 
-    /**
-     * @CircuitBreaker(fallbackMethod="lastFallback")
-     */
+    #[CircuitBreaker(fallbackMethod: 'lastFallback')]
     public function fallbackForFallback(string $bla): void
     {
         $this->logger->debug(__FUNCTION__);
@@ -77,9 +65,7 @@ class TestService implements CircuitBrokenService
         throw new InvalidArgumentException(__FUNCTION__);
     }
 
-    /**
-     * @CircuitBreaker(fallbackMethod="lastMaybeNotLeastFallback")
-     */
+    #[CircuitBreaker(fallbackMethod: 'lastMaybeNotLeastFallback')]
     public function lastFallback(string $last): void
     {
         $this->logger->debug(__FUNCTION__);
