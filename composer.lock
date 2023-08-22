@@ -8,28 +8,28 @@
     "packages": [
         {
             "name": "ackintosh/ganesha",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ackintosh/ganesha.git",
-                "reference": "a4c08dca4a7531585c75554df22b1ac9eeb4527c"
+                "reference": "bc52a767ecdd630882262f0e383ef79c5436ce27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ackintosh/ganesha/zipball/a4c08dca4a7531585c75554df22b1ac9eeb4527c",
-                "reference": "a4c08dca4a7531585c75554df22b1ac9eeb4527c",
+                "url": "https://api.github.com/repos/ackintosh/ganesha/zipball/bc52a767ecdd630882262f0e383ef79c5436ce27",
+                "reference": "bc52a767ecdd630882262f0e383ef79c5436ce27",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.0",
-                "psr/http-message": "~1.0"
+                "psr/http-message": "^1.0|^2.0"
             },
             "require-dev": {
                 "ext-memcached": "~3.1",
                 "ext-mongodb": "~1.6",
                 "ext-redis": "~5.1",
                 "friendsofphp/php-cs-fixer": "^v3.1.0",
-                "guzzlehttp/guzzle": "~6.5",
+                "guzzlehttp/guzzle": "^7.4.5",
                 "php-coveralls/php-coveralls": "~2.5",
                 "php-vcr/php-vcr": "^1.4.5",
                 "php-vcr/phpunit-testlistener-vcr": "dev-php8 as 3.2.2",
@@ -72,7 +72,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ackintosh/ganesha/issues",
-                "source": "https://github.com/ackintosh/ganesha/tree/3.1.1"
+                "source": "https://github.com/ackintosh/ganesha/tree/3.1.2"
             },
             "funding": [
                 {
@@ -80,7 +80,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-06-16T08:11:41+00:00"
+            "time": "2023-08-21T23:46:04+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -596,16 +596,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.1",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba"
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
                 "shasum": ""
             },
             "require": {
@@ -614,7 +614,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -629,7 +629,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for HTTP messages",
@@ -643,9 +643,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-message/tree/1.1"
+                "source": "https://github.com/php-fig/http-message/tree/2.0"
             },
-            "time": "2023-04-04T09:50:52+00:00"
+            "time": "2023-04-04T09:54:51+00:00"
         },
         {
             "name": "psr/log",
