@@ -6,7 +6,7 @@ use Ackintosh\Ganesha;
 use Ackintosh\Ganesha\Storage\Adapter\Apcu;
 use Ackintosh\Ganesha\Storage\Adapter\ApcuStore;
 use Ackintosh\Ganesha\Strategy\Rate\Builder;
-use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Annotations\AnnotationReader;
 use PixelFederation\CircuitBreakerBundle\AnnotationMetadataReader;
 use PixelFederation\CircuitBreakerBundle\Bridge\Ganesha\GaneshaCircuitBreaker;
 use PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command\GenerateCircuitBrokenProxiesCacheClearer;
@@ -57,8 +57,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->alias(MetadataReader::class, AnnotationMetadataReader::class);
 
+    $services->set('app.doctrine_annotation_reader', AnnotationReader::class);
+
     $services->set(AnnotationMetadataReader::class)
-        ->arg('$annotationsReader', service(Reader::class));
+        ->arg('$annotationsReader', service('app.doctrine_annotation_reader'));
 
     $services->alias(MethodExtractor::class, ReflectionMethodExtractor::class);
 
