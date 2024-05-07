@@ -1,4 +1,5 @@
 framework:
+  annotations: false
   secret: megasecretkey
   router:
     resource: "%kernel.project_dir%/config/routing.yaml"
