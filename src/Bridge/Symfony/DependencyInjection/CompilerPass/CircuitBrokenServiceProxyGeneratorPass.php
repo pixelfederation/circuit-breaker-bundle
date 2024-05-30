@@ -31,11 +31,13 @@ final class CircuitBrokenServiceProxyGeneratorPass implements CompilerPassInterf
      * @throws ServiceNotFoundException
      * @throws BadMethodCallException
      */
+    //phpcs:ignore SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     public function process(ContainerBuilder $container): void
     {
-        /** @var array<string> $serviceDefIds */
+        // @var array<string> $serviceDefIds
+
         $serviceDefIds = array_keys(
-            $container->findTaggedServiceIds('pixel_federation_circuit_breaker.circuit_broken_service')
+            $container->findTaggedServiceIds('pixel_federation_circuit_breaker.circuit_broken_service'),
         );
 
         if (count($serviceDefIds) === 0) {
@@ -68,12 +70,13 @@ final class CircuitBrokenServiceProxyGeneratorPass implements CompilerPassInterf
      */
     private function validateProxyDefinition(string $serviceDefId, Definition $definition): void
     {
-        /** @var class-string|null $className */
+        // @var class-string|null $className
+
         $className = $definition->getClass();
 
         if ($className === null) {
             throw new UnexpectedValueException(
-                sprintf('Missing class name for definition %s.', $serviceDefId)
+                sprintf('Missing class name for definition %s.', $serviceDefId),
             );
         }
 
@@ -83,8 +86,8 @@ final class CircuitBrokenServiceProxyGeneratorPass implements CompilerPassInterf
                 sprintf(
                     'Unable to create circuit broken proxy for class "%s". '
                      . 'Please remove the "final" keyword from class',
-                    $className
-                )
+                    $className,
+                ),
             );
         }
     }

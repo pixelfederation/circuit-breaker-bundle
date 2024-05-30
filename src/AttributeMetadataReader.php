@@ -26,7 +26,7 @@ final class AttributeMetadataReader implements MetadataReader
 
         if ($attributesCount > 1) {
             throw new RuntimeException(
-                'Multiple CircuitBreakerService annotations found on class ' . $serviceClass->getName()
+                'Multiple CircuitBreakerService annotations found on class ' . $serviceClass->getName(),
             );
         }
 
@@ -44,7 +44,7 @@ final class AttributeMetadataReader implements MetadataReader
 
         if ($attributesCount > 1) {
             throw new RuntimeException(
-                'Multiple CircuitBreaker annotations found on method ' . $method->getName()
+                'Multiple CircuitBreaker annotations found on method ' . $method->getName(),
             );
         }
 

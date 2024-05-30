@@ -23,7 +23,7 @@ final class GenerateCircuitBrokenProxiesCacheWarmer implements CacheWarmerInterf
      * @return array<string>
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function warmUp(string $cacheDir): array // phpcs:ignore
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
         $this->proxyGenerator->generate();
 

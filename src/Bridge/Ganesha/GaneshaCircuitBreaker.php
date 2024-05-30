@@ -27,6 +27,7 @@ final class GaneshaCircuitBreaker implements CircuitBreaker
         if (!$this->ganesha->isAvailable($configuration->getServiceName())) {
             return $fallback(ServiceIsNotAvailable::create($configuration->getServiceName()));
         }
+
         try {
             /** @psalm-suppress MixedAssignment */
             $result = $invoker();

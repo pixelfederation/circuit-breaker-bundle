@@ -37,6 +37,7 @@ final class PixelFederationCircuitBreakerExtension extends ConfigurableExtension
         $this->autoConfigureCircuitBreakers($container);
     }
 
+    //phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh,SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     private function configureMetadataReader(ContainerBuilder $container): void
     {
         $supportedReaders = [

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Bridge\Symfony;
 
-use PixelFederation\CircuitBreakerBundle\Bridge\Symfony\DependencyInjection\{
-    CompilerPass\CircuitBrokenServiceProxyGeneratorPass,
+use PixelFederation\CircuitBreakerBundle\Bridge\Symfony\DependencyInjection\{ //phpcs:ignore
+    CompilerPass\CircuitBrokenServiceProxyGeneratorPass, //phpcs:ignore
 };
 use Symfony\Component\DependencyInjection\ContainerBuilder; // phpcs:ignore
 use Symfony\Component\HttpKernel\Bundle\Bundle;

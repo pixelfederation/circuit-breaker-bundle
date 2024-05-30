@@ -28,8 +28,8 @@ final class CachedMethodExtractor implements MethodExtractor
         $item = $this->cache->getItem(self::CACHE_KEY);
 
         if ($item->isHit()) {
-            /** @var ServicesMethods $methods */
             $methods = $item->get();
+            assert($methods instanceof ServicesMethods);
 
             return $methods;
         }
