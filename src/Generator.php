@@ -43,8 +43,9 @@ final class Generator extends AccessInterceptorValueHolderFactory
      * @param array<string, mixed> $proxyOptions @codingStandardsIgnoreLine
      * @return class-string<RealObjectType>
      * @SuppressWarnings(PHPMD.StaticAccess)
-     * @psalm-suppress PossiblyUnusedReturnValue
+     * @psalm-suppress PossiblyUnusedReturnValue,ArgumentTypeCoercion,MoreSpecificReturnType
      */
+    //phpcs:ignore SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     protected function generateProxy(string $className, array $proxyOptions = []): string
     {
         if (array_key_exists($className, $this->checkedClasses)) {
@@ -67,16 +68,25 @@ final class Generator extends AccessInterceptorValueHolderFactory
             ->getProxyClassName($className, $proxyParameters);
 
         if (class_exists($proxyClassName)) {
-            return $this->checkedClasses[$className] = $proxyClassName;
+            $this->checkedClasses[$className] = $proxyClassName;
+
+            return $this->checkedClasses[$className];
         }
 
         $autoloader = $this->configuration->getProxyAutoloader();
 
+        /** @psalm-suppress ArgumentTypeCoercion */
         if ($autoloader($proxyClassName)) {
-            return $this->checkedClasses[$className] = $proxyClassName;
+            /** @psalm-suppress PropertyTypeCoercion */
+            $this->checkedClasses[$className] = $proxyClassName;
+
+            /** @psalm-suppress LessSpecificReturnType,MoreSpecificReturnType,LessSpecificReturnStatement */
+            return $this->checkedClasses[$className];
         }
 
-        return $this->checkedClasses[$className] = parent::generateProxy($className, $proxyOptions);
+        $this->checkedClasses[$className] = parent::generateProxy($className, $proxyOptions);
+
+        return $this->checkedClasses[$className];
     }
 
     private function generateClassMethodsList(): ServicesMethods

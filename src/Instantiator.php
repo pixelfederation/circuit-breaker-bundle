@@ -47,12 +47,12 @@ final class Instantiator
         return $this->proxyGenerator->createProxy(
             $service,
             $callbacks,
-            []
+            [],
         );
     }
 
     // phpcs:disable Generic.Files.LineLength.TooLong
-    // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
+    // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong, Generic.Files.LineLength.MaxExceeded
     /**
      * @return callable(CircuitBrokenService&AccessInterceptorInterface<CircuitBrokenService>=, CircuitBrokenService=, string=, array<string, mixed>=, bool=):mixed
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -64,17 +64,14 @@ final class Instantiator
         ServiceMethods $serviceMethods,
         CircuitBreakerConfiguration $configuration,
     ): callable {
+         /** @psalm-suppress MissingClosureParamType,MissingClosureReturnType,UnusedClosureParam */
+        // phpcs:disable Generic.Files.LineLength.TooLong
+        // phpcs:disable Generic.Files.LineLength.MaxExceeded
+        // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
         // phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
         // phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedPassingByReference
-        // phpcs:disable Generic.Files.LineLength.TooLong
-        // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
-        /**
-         * @psalm-suppress MissingClosureParamType
-         * @psalm-suppress MissingClosureReturnType
-         * @psalm-suppress UnusedClosureParam
-         * @var callable(CircuitBrokenService&AccessInterceptorInterface<CircuitBrokenService>=, CircuitBrokenService=, string=, array<string, mixed>=, bool=):mixed $callback
-         */
-        $callback = function (
+        //phpcs:ignore SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountBeforeControlStructure
+        return function ( //@phpstan-ignore-line
             CircuitBrokenService&AccessInterceptorInterface $proxy,
             CircuitBrokenService $instance,
             string $method,
@@ -85,23 +82,22 @@ final class Instantiator
             $serviceMethod,
             $serviceMethods,
         ): mixed {
-            // phpcs:enable Generic.Files.LineLength.TooLong
-            // phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong
             $params = $this->processInvokerParameters($instance, $method, $params);
-            /** @var Callable $callable */
+            //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
+            /** @var callable $callable */ //SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion
             $callable = [$instance, $method];
-            $invoker = static fn () => call_user_func_array($callable, $params);
+
+            $invoker = static fn() => call_user_func_array($callable, $params);
             $fallback = $this->createFallback($serviceMethod, $serviceMethods, $configuration, $instance, $params);
 
             $configuration = $configuration->withIgnoreExceptions($serviceMethod->getIgnoredExceptions());
+
             /** @psalm-suppress MixedAssignment */
             $result = $this->circuitBreaker->run($invoker, $fallback, $configuration);
             $returnEarly = true;
 
             return $result;
         };
-
-        return $callback;
     }
 
     /**
@@ -136,18 +132,21 @@ final class Instantiator
         $reflMethod = $reflClass->getMethod($method);
         $methodParams = $reflMethod->getParameters();
 
-        if (empty($methodParams)) {
+        if ($methodParams === []) {
             return false;
         }
 
         $lastMethodParam = array_pop($methodParams);
 
-        return $this->variadicParamsCache[$cacheKey] = $lastMethodParam->isVariadic();
+        $this->variadicParamsCache[$cacheKey] = $lastMethodParam->isVariadic();
+
+        return $this->variadicParamsCache[$cacheKey];
     }
 
     /**
      * @param array<mixed> $params @codingStandardsIgnoreLine
      */
+    //phpcs:ignore SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     private function createFallback(
         ServiceMethod $serviceMethod,
         ServiceMethods $serviceMethods,
@@ -171,11 +170,12 @@ final class Instantiator
         foreach (array_reverse($fallbackMethods) as $fallbackMethod) {
             /** @var Closure():mixed $callable */ // phpcs:ignore
             $callable = [$instance, $fallbackMethod];
+
             /**
              * @psalm-suppress MissingClosureReturnType
              * @psalm-suppress TooManyArguments
              */
-            $invoker = static fn () => call_user_func_array($callable, $params);
+            $invoker = static fn() => call_user_func_array($callable, $params);
 
             $circuitBrokenFallback = $serviceMethods->findByMethodName($fallbackMethod);
             if ($circuitBrokenFallback === null) {

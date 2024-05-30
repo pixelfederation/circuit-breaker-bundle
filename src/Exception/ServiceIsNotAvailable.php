@@ -11,19 +11,19 @@ final class ServiceIsNotAvailable extends DomainException
 {
     private const TEXT = 'Service %s is not available.';
 
-    public static function createWithPrevious(string $serviceName, Throwable $previous): ServiceIsNotAvailable
+    public static function createWithPrevious(string $serviceName, Throwable $previous): self
     {
         return new self(
             sprintf(self::TEXT, $serviceName),
             (int) $previous->getCode(),
-            $previous
+            $previous,
         );
     }
 
-    public static function create(string $serviceName): ServiceIsNotAvailable
+    public static function create(string $serviceName): self
     {
         return new self(
-            sprintf(self::TEXT, $serviceName)
+            sprintf(self::TEXT, $serviceName),
         );
     }
 }

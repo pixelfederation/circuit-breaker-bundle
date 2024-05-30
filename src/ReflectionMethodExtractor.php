@@ -60,6 +60,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
      * @return array<ServiceMethod>
      * @throws InvalidArgumentException
      */
+    //phpcs:ignore SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     private function extractServiceMethods(
         ReflectionClass $reflectionClass,
         CircuitBreakerConfiguration $configuration,
@@ -78,13 +79,13 @@ final class ReflectionMethodExtractor implements MethodExtractor
                 $reflectionClass,
                 $method,
                 $methodAnnotation,
-                $configuration
+                $configuration,
             );
 
             $serviceMethods[] = new ServiceMethod(
                 $method->getName(),
                 $fallbackMethod,
-                $methodAnnotation->getIgnoreExceptions()
+                $methodAnnotation->getIgnoreExceptions(),
             );
         }
 
@@ -98,7 +99,9 @@ final class ReflectionMethodExtractor implements MethodExtractor
      * @throws InvalidArgumentException
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
+    //phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh, SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     private function extractFallbackMethod(
         ReflectionClass $invokerReflClass,
         ReflectionMethod $invokerReflMethod,
@@ -119,8 +122,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                     'Fallback method %s::%s not exists. (Fallback for %s)',
                     $invokerReflClass->getName(),
                     $fallbackMethod,
-                    $invokerMethod
-                )
+                    $invokerMethod,
+                ),
             );
         }
 
@@ -131,8 +134,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                     'Fallback method %s::%s needs to be public. (Fallback for %s)',
                     $invokerReflClass->getName(),
                     $fallbackMethod,
-                    $invokerMethod
-                )
+                    $invokerMethod,
+                ),
             );
         }
 
@@ -147,8 +150,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                     $fallbackMethod,
                     count($invokerParameters),
                     count($fallbackParameters),
-                    $invokerMethod
-                )
+                    $invokerMethod,
+                ),
             );
         }
 
@@ -160,8 +163,9 @@ final class ReflectionMethodExtractor implements MethodExtractor
             }
 
             $invokerParameterType = $invokerParameter->getType();
-            $invokerParameterTypeName = $invokerParameterType instanceof ReflectionNamedType ?
-                $invokerParameterType->getName() : 'unknown';
+            $invokerParameterTypeName = $invokerParameterType instanceof ReflectionNamedType
+                ? $invokerParameterType->getName()
+                : 'unknown';
 
             if ($invokerParameter->hasType() && !$fallbackParameter->hasType()) {
                 throw new InvalidArgumentException(
@@ -171,14 +175,15 @@ final class ReflectionMethodExtractor implements MethodExtractor
                         $fallbackParameter->getName(),
                         $invokerReflClass->getName(),
                         $fallbackMethod,
-                        $invokerMethod
-                    )
+                        $invokerMethod,
+                    ),
                 );
             }
 
             $fallbackParameterType = $fallbackParameter->getType();
-            $fallbackParameterTypeName = $fallbackParameterType instanceof ReflectionNamedType ?
-                $fallbackParameterType->getName() : 'unknown';
+            $fallbackParameterTypeName = $fallbackParameterType instanceof ReflectionNamedType
+                ? $fallbackParameterType->getName()
+                : 'unknown';
 
             if ($invokerParameterTypeName !== $fallbackParameterTypeName) {
                 throw new InvalidArgumentException(
@@ -190,8 +195,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                         $fallbackMethod,
                         $invokerParameterTypeName,
                         $fallbackParameterTypeName,
-                        $invokerMethod
-                    )
+                        $invokerMethod,
+                    ),
                 );
             }
         }
@@ -203,6 +208,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
      * @param ReflectionClass<CircuitBrokenService> $reflectionClass
      * @throws InvalidArgumentException
      */
+    //phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh
     private function validateRecursiveFallbackCalls(
         ReflectionClass $reflectionClass,
         ServiceMethod ...$serviceMethods,
@@ -219,8 +225,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                         sprintf(
                             'Circular reference of fallback detected in %s::%s',
                             $reflectionClass->getName(),
-                            $method
-                        )
+                            $method,
+                        ),
                     );
                 }
                 $fallbackMethod = $methods[$fallbackMethod] ?? null;
