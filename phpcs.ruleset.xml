@@ -3,7 +3,7 @@
 
   <description>PixelFederation rule set.</description>
 
-  <config name="testVersion" value="8.1"/><!-- insert your php version -->
+  <config name="testVersion" value="8.2"/><!-- insert your lowest supported php version -->
   <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.xml">
     <exclude name="SlevomatCodingStandard.ControlStructures.DisallowEmpty"/>
     <exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators"/>

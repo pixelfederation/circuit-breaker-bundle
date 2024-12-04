@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PixelFederation\CircuitBreakerBundle\Tests\Tests\Functional\app;
+namespace PixelFederation\CircuitBreakerBundle\Tests\Functional\app;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\GaneshaSpy;

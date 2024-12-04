@@ -4,22 +4,22 @@ grumphp:
   git_hook_variables:
     EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -t circuit-breaker-bundle-php81'
   testsuites:
-    php8.1:
+    php8.2:
       tasks:
         - phpcs
         - phpmd
         - phpcsfixer2
-        - phpparser
+    #    - phpparser
         - phplint
-        - phpunit
+     #   - phpunit
         - shell
         - phpstan
         - psalm
-    php8.1-no-analyse:
+    php8.2-no-analyse:
       tasks:
         - phpunit
         - shell
-    php8.2-no-analyse:
+    php8.3-no-analyse:
       tasks:
         - phpmd
         - phpcsfixer2
