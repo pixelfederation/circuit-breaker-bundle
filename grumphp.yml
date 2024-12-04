@@ -9,9 +9,9 @@ grumphp:
         - phpcs
         - phpmd
         - phpcsfixer2
-    #    - phpparser
+        - phpparser
         - phplint
-     #   - phpunit
+        - phpunit
         - shell
         - phpstan
         - psalm
