@@ -18,13 +18,13 @@ jobs:
     strategy:
       matrix:
         php-version: [ '8.2', '8.3' ]
-        symfony-version: [ '6.3', '7.1' ]
+        symfony-version: [ '6.4.*', '7.1.*' ]
         symfony-deprecations-helper: [ 'max[direct]=0' ]
         grumphp-testsuite: [ 'no-analyse' ]
         grumphp-flag: [ '-no-analyse' ]
         include:
           - php-version: '8.2'
-            symfony-version: '7.1'
+            symfony-version: '7.1.*'
             symfony-deprecations-helper: 'max[direct]=0&max[indirect]=99999'
             grumphp-testsuite: 'main'
 
