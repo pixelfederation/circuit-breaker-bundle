@@ -20,6 +20,7 @@ jobs:
         php-version: [ '8.2', '8.3' ]
         symfony-version: [ '6.4.*', '7.1.*' ]
         symfony-deprecations-helper: [ 'max[direct]=0' ]
+        composer-flag: [ '--prefer-lowest' ]
         grumphp-testsuite: [ 'no-analyse' ]
         grumphp-flag: [ '-no-analyse' ]
         include:
