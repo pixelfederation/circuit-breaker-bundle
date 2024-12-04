@@ -49,6 +49,7 @@ grumphp:
     phpparser:
       ignore_patterns:
         - tests/
+        - src/Bridge/Symfony/Command/GenerateCircuitBrokenProxiesCacheWarmer.php
       kind: php7
       visitors:
         declare_strict_types: ~
