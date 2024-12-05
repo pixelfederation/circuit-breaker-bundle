@@ -7,5 +7,6 @@ parameters:
   excludePaths:
     - tests/*
     - src/DependencyInjection
+    - src/Bridge/Symfony/Command/GenerateCircuitBrokenProxiesCacheWarmer.php
 
   typeAliases:

@@ -38,12 +38,16 @@ final class Generator extends AccessInterceptorValueHolderFactory
      * to activate in Symfony, since Symfony relies directly on Composer and it would be needed to register this
      * autoloader with Composer autoloader initialization
      *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @psalm-suppress PossiblyUnusedReturnValue
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress ArgumentTypeCoercion
+     * @psalm-suppress PropertyTypeCoercion
+     * @psalm-suppress LessSpecificReturnStatement
      * @template RealObjectType of object
      * @param class-string<RealObjectType> $className
      * @param array<string, mixed> $proxyOptions @codingStandardsIgnoreLine
      * @return class-string<RealObjectType>
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     * @psalm-suppress PossiblyUnusedReturnValue
      */
     protected function generateProxy(string $className, array $proxyOptions = []): string
     {
