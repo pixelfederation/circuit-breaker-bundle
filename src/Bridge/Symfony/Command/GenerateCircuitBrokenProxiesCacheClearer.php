@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle\Bridge\Symfony\Command;
 
+use Override;
 use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
@@ -17,9 +18,7 @@ final class GenerateCircuitBrokenProxiesCacheClearer implements CacheClearerInte
     ) {
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
+    #[Override]
     public function clear(string $cacheDir): void // phpcs:ignore
     {
         $this->cache->prune();

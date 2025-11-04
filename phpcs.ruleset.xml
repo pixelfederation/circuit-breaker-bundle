@@ -1,28 +1,29 @@
-<?xml version="1.0"?>
-<ruleset name="PixelFederation">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="PixelFederation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+  <arg name="basepath" value="."/>
+  <arg name="cache" value=".php-cs-fixer.cache"/>
+  <arg name="colors"/>
+  <arg name="extensions" value="php"/>
+  <!-- Show progress, show the error codes for each message (source). -->
+  <arg value="ps"/>
   <description>PixelFederation rule set.</description>
-
-  <config name="testVersion" value="8.2"/><!-- insert your lowest supported php version -->
-  <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.xml">
-    <exclude name="SlevomatCodingStandard.ControlStructures.DisallowEmpty"/>
-    <exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators"/>
-    <exclude name="SlevomatCodingStandard.Namespaces.DisallowGroupUse.DisallowedGroupUse"/>
-    <exclude name="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine.MultipleUsesPerLine"/>
-    <exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
-    <exclude name="SlevomatCodingStandard.Classes.RequireSingleLineMethodSignature.RequiredSingleLineSignature"/>
-    <exclude name="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion.DisallowedConstructorPropertyPromotion"/>
-    <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration.DisallowedTrailingComma"/>
-    <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInClosureUse.DisallowedTrailingComma"/>
-    <exclude name="SlevomatCodingStandard.Namespaces.UseSpacing.IncorrectLinesCountBetweenDifferentTypeOfUse"/>
+  <config name="testVersion" value="8.3"/>
+  <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.83.non-ddd.xml">
+    <exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
   </rule>
 
   <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
     <properties>
       <property name="rootNamespaces" type="array">
         <element key="src" value="PixelFederation\CircuitBreakerBundle"/>
+        <element key="tests" value="PixelFederation\CircuitBreakerBundle\Tests"/>
       </property>
     </properties>
   </rule>
-
+  <rule ref="SlevomatCodingStandard.PHP.UselessParentheses">
+    <properties>
+      <property name="enableCheckAroundNew" value="false"/>
+    </properties>
+  </rule>
 </ruleset>

@@ -13,7 +13,7 @@ use ProxyManager\Signature\Exception\MissingSignatureException;
 use ReflectionClass;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 // phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint
 final class Instantiator
@@ -46,16 +46,14 @@ final class Instantiator
 
         return $this->proxyGenerator->createProxy(
             $service,
-            $callbacks,
-            []
+            $callbacks, //@phpstan-ignore-line
         );
     }
 
     // phpcs:disable Generic.Files.LineLength.TooLong
     // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
     /**
-     * @return callable(CircuitBrokenService&AccessInterceptorInterface<CircuitBrokenService>=, CircuitBrokenService=, string=, array<string, mixed>=, bool=):mixed
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @return Closure(CircuitBrokenService&AccessInterceptorInterface<object>, CircuitBrokenService, string, array<mixed>, mixed): mixed
      */
     // phpcs:enable
     // phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint
@@ -64,17 +62,7 @@ final class Instantiator
         ServiceMethods $serviceMethods,
         CircuitBreakerConfiguration $configuration,
     ): callable {
-        // phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-        // phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedPassingByReference
-        // phpcs:disable Generic.Files.LineLength.TooLong
-        // phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
-        /**
-         * @psalm-suppress MissingClosureParamType
-         * @psalm-suppress MissingClosureReturnType
-         * @psalm-suppress UnusedClosureParam
-         * @var callable(CircuitBrokenService&AccessInterceptorInterface<CircuitBrokenService>=, CircuitBrokenService=, string=, array<string, mixed>=, bool=):mixed $callback
-         */
-        $callback = function (
+        return function (
             CircuitBrokenService&AccessInterceptorInterface $proxy,
             CircuitBrokenService $instance,
             string $method,
@@ -88,9 +76,9 @@ final class Instantiator
             // phpcs:enable Generic.Files.LineLength.TooLong
             // phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong
             $params = $this->processInvokerParameters($instance, $method, $params);
-            /** @var Callable $callable */
             $callable = [$instance, $method];
-            $invoker = static fn () => call_user_func_array($callable, $params);
+            assert(is_callable($callable));
+            $invoker = static fn (): mixed => call_user_func_array($callable, $params);
             $fallback = $this->createFallback($serviceMethod, $serviceMethods, $configuration, $instance, $params);
 
             $configuration = $configuration->withIgnoreExceptions($serviceMethod->getIgnoredExceptions());
@@ -100,8 +88,6 @@ final class Instantiator
 
             return $result;
         };
-
-        return $callback;
     }
 
     /**
@@ -136,13 +122,14 @@ final class Instantiator
         $reflMethod = $reflClass->getMethod($method);
         $methodParams = $reflMethod->getParameters();
 
-        if (empty($methodParams)) {
+        if ($methodParams === []) {
             return false;
         }
 
         $lastMethodParam = array_pop($methodParams);
+        $this->variadicParamsCache[$cacheKey] = $lastMethodParam->isVariadic();
 
-        return $this->variadicParamsCache[$cacheKey] = $lastMethodParam->isVariadic();
+        return $this->variadicParamsCache[$cacheKey];
     }
 
     /**
@@ -169,8 +156,8 @@ final class Instantiator
         }
 
         foreach (array_reverse($fallbackMethods) as $fallbackMethod) {
-            /** @var Closure():mixed $callable */ // phpcs:ignore
             $callable = [$instance, $fallbackMethod];
+            assert(is_callable($callable));
             /**
              * @psalm-suppress MissingClosureReturnType
              * @psalm-suppress TooManyArguments

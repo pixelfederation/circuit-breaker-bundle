@@ -2,23 +2,24 @@
 
 declare(strict_types=1);
 
-$config = (new PhpCsFixer\Config())
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
-        'array_syntax'      => [
+        'array_syntax' => [
             'syntax' => 'short',
         ],
-        'no_useless_else'   => true,
+        'no_unused_imports' => true,
+        'no_useless_else' => true,
         'no_useless_return' => true,
         'strict_comparison' => true,
-        'strict_param'      => true,
-        'no_unused_imports' => true,
+        'strict_param' => true,
     ])
     ->setFinder(
-        PhpCsFixer\Finder::create()
+        Finder::create()
             ->exclude('vendor')
             ->exclude('tests')
-            ->in(__DIR__)
+            ->in(__DIR__),
     );
-
-return $config;

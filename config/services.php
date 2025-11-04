@@ -35,7 +35,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set(
         'pixel_federation_circuit_breaker.proxy_cache_dir',
-        '%kernel.cache_dir%/pixelfederation/cicruit_breaker'
+        '%kernel.cache_dir%/pixelfederation/cicruit_breaker',
     );
 
     $parameters->set('pixel_federation_circuit_breaker.cache_namespace', 'pf_cicruit_breaker');
@@ -51,9 +51,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set('pixel_federation_circuit_breaker.circuit_breaker.cache', ChainAdapter::class)
         ->arg('$adapters', [
-        service('pixel_federation_circuit_breaker.array_cache_item_pool'),
-        service('pixel_federation_circuit_breaker.circuit_breaker.cache_item_pool'),
-    ]);
+            service('pixel_federation_circuit_breaker.array_cache_item_pool'),
+            service('pixel_federation_circuit_breaker.circuit_breaker.cache_item_pool'),
+        ]);
 
     $services->alias(MetadataReader::class, AnnotationMetadataReader::class);
 
@@ -71,8 +71,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ReflectionMethodExtractor::class)
         ->arg('$reader', service(MetadataReader::class))
-        ->arg('$serviceClasses', [
-    ]);
+        ->arg('$serviceClasses', []);
 
     $services->set(GenerateCircuitBrokenProxiesCacheClearer::class)
         ->arg('$cache', service('pixel_federation_circuit_breaker.circuit_breaker.cache'))
@@ -86,15 +85,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set('pixel_federation_circuit_breaker.circuit_breaker.service_proxy_configuration', Configuration::class)
         ->call('setGeneratorStrategy', [
-        service('pixel_federation_circuit_breaker.circuit_breaker.proxy_file_writer_generator'),
-    ])
+            service('pixel_federation_circuit_breaker.circuit_breaker.proxy_file_writer_generator'),
+        ])
         ->call('setProxiesTargetDir', [
-        '%pixel_federation_circuit_breaker.proxy_cache_dir%',
-    ]);
+            '%pixel_federation_circuit_breaker.proxy_cache_dir%',
+        ]);
 
     $services->set(
         'pixel_federation_circuit_breaker.circuit_breaker.proxy_file_writer_generator',
-        FileWriterGeneratorStrategy::class
+        FileWriterGeneratorStrategy::class,
     )
         ->arg('$fileLocator', service('pixel_federation_circuit_breaker.circuit_breaker.proxy_file_locator'));
 
@@ -124,13 +123,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set('pixel_federation_circuit_breaker.ganesha', Ganesha::class)
         ->lazy(true)
         ->factory([
-        service('pixel_federation_circuit_breaker.ganesha_builder'),
-        'build',
-    ]);
+            service('pixel_federation_circuit_breaker.ganesha_builder'),
+            'build',
+        ]);
 
     $services->set('pixel_federation_circuit_breaker.ganesha_builder', Builder::class)
         ->factory([Ganesha\Builder::class, 'withRateStrategy'])
-        ->call('adapter', [service('pixel_federation_circuit_breaker.ganesha_adapter'),])
+        ->call('adapter', [service('pixel_federation_circuit_breaker.ganesha_adapter')])
         ->call('failureRateThreshold', [25])
         ->call('intervalToHalfOpen', [5])
         ->call('minimumRequests', [5])

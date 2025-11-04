@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
 
+use Override;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Version;
@@ -38,7 +39,6 @@ final class Generator extends AccessInterceptorValueHolderFactory
      * to activate in Symfony, since Symfony relies directly on Composer and it would be needed to register this
      * autoloader with Composer autoloader initialization
      *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @psalm-suppress PossiblyUnusedReturnValue
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-suppress ArgumentTypeCoercion
@@ -49,6 +49,7 @@ final class Generator extends AccessInterceptorValueHolderFactory
      * @param array<string, mixed> $proxyOptions @codingStandardsIgnoreLine
      * @return class-string<RealObjectType>
      */
+    #[Override]
     protected function generateProxy(string $className, array $proxyOptions = []): string
     {
         if (array_key_exists($className, $this->checkedClasses)) {
@@ -71,16 +72,22 @@ final class Generator extends AccessInterceptorValueHolderFactory
             ->getProxyClassName($className, $proxyParameters);
 
         if (class_exists($proxyClassName)) {
-            return $this->checkedClasses[$className] = $proxyClassName;
+            $this->checkedClasses[$className] = $proxyClassName;
+
+            return $this->checkedClasses[$className];
         }
 
         $autoloader = $this->configuration->getProxyAutoloader();
 
         if ($autoloader($proxyClassName)) {
-            return $this->checkedClasses[$className] = $proxyClassName;
+            $this->checkedClasses[$className] = $proxyClassName;
+
+            return $this->checkedClasses[$className];
         }
 
-        return $this->checkedClasses[$className] = parent::generateProxy($className, $proxyOptions);
+        $this->checkedClasses[$className] = parent::generateProxy($className, $proxyOptions);
+
+        return $this->checkedClasses[$className];
     }
 
     private function generateClassMethodsList(): ServicesMethods

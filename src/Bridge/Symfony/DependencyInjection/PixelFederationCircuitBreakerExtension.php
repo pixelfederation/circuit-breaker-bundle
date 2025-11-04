@@ -6,6 +6,7 @@ namespace PixelFederation\CircuitBreakerBundle\Bridge\Symfony\DependencyInjectio
 
 use Attribute;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Override;
 use PixelFederation\CircuitBreakerBundle\AnnotationMetadataReader;
 use PixelFederation\CircuitBreakerBundle\AttributeMetadataReader;
 use PixelFederation\CircuitBreakerBundle\CircuitBrokenService;
@@ -20,15 +21,15 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 final class PixelFederationCircuitBreakerExtension extends ConfigurableExtension
 {
     /**
      * @param array<array-key, mixed> $mergedConfig @codingStandardsIgnoreLine
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+    #[Override]
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container): void
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../../../../config'));
@@ -37,6 +38,7 @@ final class PixelFederationCircuitBreakerExtension extends ConfigurableExtension
         $this->autoConfigureCircuitBreakers($container);
     }
 
+    //phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh
     private function configureMetadataReader(ContainerBuilder $container): void
     {
         $supportedReaders = [

@@ -28,14 +28,6 @@
   </plugins>
 
   <issueHandlers>
-    <!-- Temporary suppressing issues for files that conditionally implements interface: remove in SF 7 -->
-    <DuplicateClass>
-      <errorLevel type="suppress">
-        <file name="src/Bridge/Symfony/Command/GenerateCircuitBrokenProxiesCacheWarmer.php" />
-      </errorLevel>
-    </DuplicateClass>
-
-
     <PossiblyUnusedMethod errorLevel="suppress"/>
     <UnusedClass errorLevel="suppress"/>
   </issueHandlers>

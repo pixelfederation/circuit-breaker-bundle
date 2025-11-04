@@ -6,6 +6,7 @@ namespace PixelFederation\CircuitBreakerBundle;
 
 use Assert\Assert;
 use InvalidArgumentException;
+use Override;
 use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreaker;
 use ReflectionClass;
 use ReflectionException;
@@ -13,7 +14,7 @@ use ReflectionMethod;
 use ReflectionNamedType;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 final class ReflectionMethodExtractor implements MethodExtractor
 {
@@ -28,10 +29,10 @@ final class ReflectionMethodExtractor implements MethodExtractor
 
     /**
      * @param class-string<CircuitBrokenService> $serviceClass
-     * @SuppressWarnings(PHPMD.StaticAccess)
      * @throws InvalidArgumentException
      * @throws ReflectionException
      */
+    #[Override]
     public function extractFor(string $serviceClass): ServiceMethods
     {
         Assert::that($serviceClass)->implementsInterface(CircuitBrokenService::class);
@@ -43,6 +44,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
         return new ServiceMethods($serviceClass, $configuration, ...$methods);
     }
 
+    #[Override]
     public function extractAll(): ServicesMethods
     {
         $servicesMethods = new ServicesMethods();
@@ -78,13 +80,13 @@ final class ReflectionMethodExtractor implements MethodExtractor
                 $reflectionClass,
                 $method,
                 $methodAnnotation,
-                $configuration
+                $configuration,
             );
 
             $serviceMethods[] = new ServiceMethod(
                 $method->getName(),
                 $fallbackMethod,
-                $methodAnnotation->getIgnoreExceptions()
+                $methodAnnotation->getIgnoreExceptions(),
             );
         }
 
@@ -96,9 +98,11 @@ final class ReflectionMethodExtractor implements MethodExtractor
     /**
      * @param ReflectionClass<CircuitBrokenService> $invokerReflClass
      * @throws InvalidArgumentException
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings("PHPMD.CyclomaticComplexity")
+     * @SuppressWarnings("PHPMD.NPathComplexity")
+     * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
      */
+    //phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh
     private function extractFallbackMethod(
         ReflectionClass $invokerReflClass,
         ReflectionMethod $invokerReflMethod,
@@ -119,8 +123,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                     'Fallback method %s::%s not exists. (Fallback for %s)',
                     $invokerReflClass->getName(),
                     $fallbackMethod,
-                    $invokerMethod
-                )
+                    $invokerMethod,
+                ),
             );
         }
 
@@ -131,8 +135,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                     'Fallback method %s::%s needs to be public. (Fallback for %s)',
                     $invokerReflClass->getName(),
                     $fallbackMethod,
-                    $invokerMethod
-                )
+                    $invokerMethod,
+                ),
             );
         }
 
@@ -147,8 +151,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                     $fallbackMethod,
                     count($invokerParameters),
                     count($fallbackParameters),
-                    $invokerMethod
-                )
+                    $invokerMethod,
+                ),
             );
         }
 
@@ -160,8 +164,9 @@ final class ReflectionMethodExtractor implements MethodExtractor
             }
 
             $invokerParameterType = $invokerParameter->getType();
-            $invokerParameterTypeName = $invokerParameterType instanceof ReflectionNamedType ?
-                $invokerParameterType->getName() : 'unknown';
+            $invokerParameterTypeName = $invokerParameterType instanceof ReflectionNamedType
+                ? $invokerParameterType->getName()
+                : 'unknown';
 
             if ($invokerParameter->hasType() && !$fallbackParameter->hasType()) {
                 throw new InvalidArgumentException(
@@ -171,14 +176,15 @@ final class ReflectionMethodExtractor implements MethodExtractor
                         $fallbackParameter->getName(),
                         $invokerReflClass->getName(),
                         $fallbackMethod,
-                        $invokerMethod
-                    )
+                        $invokerMethod,
+                    ),
                 );
             }
 
             $fallbackParameterType = $fallbackParameter->getType();
-            $fallbackParameterTypeName = $fallbackParameterType instanceof ReflectionNamedType ?
-                $fallbackParameterType->getName() : 'unknown';
+            $fallbackParameterTypeName = $fallbackParameterType instanceof ReflectionNamedType
+                ? $fallbackParameterType->getName()
+                : 'unknown';
 
             if ($invokerParameterTypeName !== $fallbackParameterTypeName) {
                 throw new InvalidArgumentException(
@@ -190,8 +196,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                         $fallbackMethod,
                         $invokerParameterTypeName,
                         $fallbackParameterTypeName,
-                        $invokerMethod
-                    )
+                        $invokerMethod,
+                    ),
                 );
             }
         }
@@ -203,6 +209,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
      * @param ReflectionClass<CircuitBrokenService> $reflectionClass
      * @throws InvalidArgumentException
      */
+    //phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh
     private function validateRecursiveFallbackCalls(
         ReflectionClass $reflectionClass,
         ServiceMethod ...$serviceMethods,
@@ -219,8 +226,8 @@ final class ReflectionMethodExtractor implements MethodExtractor
                         sprintf(
                             'Circular reference of fallback detected in %s::%s',
                             $reflectionClass->getName(),
-                            $method
-                        )
+                            $method,
+                        ),
                     );
                 }
                 $fallbackMethod = $methods[$fallbackMethod] ?? null;
@@ -229,8 +236,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
     }
 
     /**
-     * @param ReflectionClass<CircuitBrokenService> $serviceClass
-     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param ReflectionClass<object> $serviceClass
      */
     private function createConfiguration(ReflectionClass $serviceClass): CircuitBreakerConfiguration
     {

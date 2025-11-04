@@ -1,23 +1,32 @@
 version: '3.5'
-
+x-php-common: &php-common
+  volumes:
+    - .:/srv/www:delegated
+    - ~/.composer:/root/.composer
+  environment:
+    - XDEBUG_CONFIG=idekey=PHPSTORM
+    - COMPOSER_MEMORY_LIMIT=-1
 services:
-  # PHP
-  circuit-breaker-bundle-php82:
-    container_name: circuit-breaker-bundle-php82
-    build: ./docker/php82
-    volumes:
-      - .:/srv/www:delegated
-      - ~/.composer:/root/.composer
-    environment:
-      - XDEBUG_CONFIG=idekey=PHPSTORM
-      - COMPOSER_MEMORY_LIMIT=-1
 
   circuit-breaker-bundle-php83:
+    <<: *php-common
     container_name: circuit-breaker-bundle-php83
-    build: ./docker/php83
-    volumes:
-      - .:/srv/www:delegated
-      - ~/.composer:/root/.composer
-    environment:
-      - XDEBUG_CONFIG=idekey=PHPSTORM
-      - COMPOSER_MEMORY_LIMIT=-1
+    build:
+      dockerfile: ./docker/php/Dockerfile
+      context: ./
+      args:
+        PHP_VERSION: 8.3
+
+  circuit-breaker-bundle-php84:
+    <<: *php-common
+    container_name: circuit-breaker-bundle-php84
+    build:
+      dockerfile: ./docker/php/Dockerfile
+      context: ./
+      args:
+        PHP_VERSION: 8.4
+
+  circuit-breaker-bundle-php-min:
+    container_name: circuit-breaker-bundle-php-min
+    extends:
+      service: circuit-breaker-bundle-php83

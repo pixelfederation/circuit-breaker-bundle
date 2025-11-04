@@ -6,6 +6,7 @@ namespace PixelFederation\CircuitBreakerBundle\Bridge\Ganesha;
 
 use Ackintosh\Ganesha;
 use Closure;
+use Override;
 use PixelFederation\CircuitBreakerBundle\CircuitBreaker;
 use PixelFederation\CircuitBreakerBundle\CircuitBreakerConfiguration;
 use PixelFederation\CircuitBreakerBundle\Exception\ServiceIsNotAvailable;
@@ -19,9 +20,7 @@ final class GaneshaCircuitBreaker implements CircuitBreaker
     ) {
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
+    #[Override]
     public function run(Closure $invoker, Closure $fallback, CircuitBreakerConfiguration $configuration): mixed
     {
         if (!$this->ganesha->isAvailable($configuration->getServiceName())) {

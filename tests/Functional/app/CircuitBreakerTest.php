@@ -28,7 +28,7 @@ final class CircuitBreakerTest extends TestCase
         string $method,
         ?string $argument,
         array $expectedCalls,
-        int $expectedFailures
+        int $expectedFailures,
     ): void {
         /** @var TestServiceWithAnnotations|TestServiceWithAttributes $service */
         $service = self::getContainer()->get($serviceClass);
@@ -58,7 +58,7 @@ final class CircuitBreakerTest extends TestCase
                     'runWithStackedFallbacks:something',
                     'fallback:something',
                     'fallbackForFallback:something',
-                    'lastFallback:something'
+                    'lastFallback:something',
                 ],
                 3,
             ],
@@ -84,7 +84,7 @@ final class CircuitBreakerTest extends TestCase
                     'runWithStackedFallbacks:something',
                     'fallback:something',
                     'fallbackForFallback:something',
-                    'lastFallback:something'
+                    'lastFallback:something',
                 ],
                 3,
             ],
