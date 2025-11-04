@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
 
+use Override;
 use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreaker as CircuitBreakerMetadata;
 use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreakerService;
 use ReflectionClass;
@@ -17,6 +18,7 @@ final class FallbackableMetadataReader implements MetadataReader
     ) {
     }
 
+    #[Override]
     public function getServiceMetadata(ReflectionClass $serviceClass): ?CircuitBreakerService
     {
         $metadata = $this->attributeReader->getServiceMetadata($serviceClass);
@@ -24,6 +26,7 @@ final class FallbackableMetadataReader implements MetadataReader
         return $metadata ?? $this->annotationReader->getServiceMetadata($serviceClass);
     }
 
+    #[Override]
     public function getMethodMetadata(ReflectionMethod $method): ?CircuitBreakerMetadata
     {
         $metadata = $this->attributeReader->getMethodMetadata($method);

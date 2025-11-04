@@ -22,13 +22,13 @@ final class CircuitBreakerConfiguration
     public static function fromAnnotation(
         string $serviceClass,
         CircuitBreakerService $annotation,
-    ): CircuitBreakerConfiguration {
+    ): self {
         $serviceName = $annotation->getServiceName() ?? $serviceClass;
 
         return new self($serviceName, $annotation->getDefaultFallback(), $annotation->getIgnoreExceptions());
     }
 
-    public static function fromServiceName(string $serviceName): CircuitBreakerConfiguration
+    public static function fromServiceName(string $serviceName): self
     {
         return new self($serviceName, null, []);
     }
@@ -46,12 +46,12 @@ final class CircuitBreakerConfiguration
     /**
      * @param array<int, class-string<Throwable>> $ignoreExceptions
      */
-    public function withIgnoreExceptions(array $ignoreExceptions): CircuitBreakerConfiguration
+    public function withIgnoreExceptions(array $ignoreExceptions): self
     {
         return new self(
             $this->serviceName,
             $this->defaultFallback,
-            array_merge($this->ignoreExceptions, $ignoreExceptions)
+            array_merge($this->ignoreExceptions, $ignoreExceptions),
         );
     }
 

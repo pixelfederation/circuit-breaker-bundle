@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
 
+use Override;
 use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreaker as CircuitBreakerMetadata;
 use PixelFederation\CircuitBreakerBundle\Annotation\CircuitBreakerService;
 use ReflectionClass;
@@ -15,6 +16,7 @@ final class AttributeMetadataReader implements MetadataReader
     /**
      * @param ReflectionClass<object> $serviceClass
      */
+    #[Override]
     public function getServiceMetadata(ReflectionClass $serviceClass): ?CircuitBreakerService
     {
         $reflAttributes = $serviceClass->getAttributes(CircuitBreakerService::class);
@@ -26,13 +28,14 @@ final class AttributeMetadataReader implements MetadataReader
 
         if ($attributesCount > 1) {
             throw new RuntimeException(
-                'Multiple CircuitBreakerService annotations found on class ' . $serviceClass->getName()
+                'Multiple CircuitBreakerService annotations found on class ' . $serviceClass->getName(),
             );
         }
 
         return $reflAttributes[0]->newInstance();
     }
 
+    #[Override]
     public function getMethodMetadata(ReflectionMethod $method): ?CircuitBreakerMetadata
     {
         $reflAttributes = $method->getAttributes(CircuitBreakerMetadata::class);
@@ -44,7 +47,7 @@ final class AttributeMetadataReader implements MetadataReader
 
         if ($attributesCount > 1) {
             throw new RuntimeException(
-                'Multiple CircuitBreaker annotations found on method ' . $method->getName()
+                'Multiple CircuitBreaker annotations found on method ' . $method->getName(),
             );
         }
 

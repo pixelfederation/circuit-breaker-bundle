@@ -6,6 +6,7 @@ namespace PixelFederation\CircuitBreakerBundle;
 
 use ArrayIterator;
 use IteratorAggregate;
+use Override;
 use Traversable;
 
 /**
@@ -42,6 +43,7 @@ final class ServicesMethods implements IteratorAggregate
     /**
      * @return Traversable<class-string<CircuitBrokenService>, ServiceMethods>
      */
+    #[Override]
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->methods);

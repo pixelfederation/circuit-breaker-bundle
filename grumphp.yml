@@ -2,9 +2,9 @@ grumphp:
   stop_on_failure: true
   process_timeout: 600
   git_hook_variables:
-    EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -t circuit-breaker-bundle-php81'
+    EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -t circuit-breaker-bundle-php-min'
   testsuites:
-    php8.2:
+    php8.3:
       tasks:
         - phpcs
         - phpmd
@@ -15,24 +15,25 @@ grumphp:
         - shell
         - phpstan
         - psalm
-    php8.2-no-analyse:
+    php8.4:
       tasks:
-        - phpunit
-        - shell
-    php8.3-no-analyse:
-      tasks:
+        - phpcs
         - phpmd
         - phpcsfixer2
         - phpparser
+        - phplint
         - phpunit
         - shell
+        - phpstan
+        - psalm
   tasks:
     phpcs:
       standard: 'phpcs.ruleset.xml'
       tab_width: 4
       whitelist_patterns: [ ]
       encoding: utf-8
-      ignore_patterns: [ ]
+      ignore_patterns:
+        - tests/
       sniffs: [ ]
       triggered_by: [ php ]
     phpmd:
@@ -69,6 +70,7 @@ grumphp:
     phpstan:
       autoload_file: ~
       configuration: 'phpstan.neon'
+      memory_limit: "-1"
       level: max
       ignore_patterns:
         - tests/

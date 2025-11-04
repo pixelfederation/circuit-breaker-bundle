@@ -17,16 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ '8.2', '8.3' ]
-        symfony-version: [ '6.4.*', '7.1.*' ]
+        php-version: [ '8.3', '8.4' ]
+        symfony-version: [ '7.3.*' ]
         symfony-deprecations-helper: [ 'max[direct]=0' ]
-        grumphp-testsuite: [ 'no-analyse' ]
-        grumphp-flag: [ '-no-analyse' ]
-        include:
-          - php-version: '8.2'
-            symfony-version: '7.1.*'
-            symfony-deprecations-helper: 'max[direct]=0&max[indirect]=99999'
-            grumphp-testsuite: 'main'
 
     name: "PHP: ${{ matrix.php-version }}, Symfony: ${{ matrix.symfony-version }}, GrumPHP: ${{ matrix.grumphp-testsuite }}, Composer: ${{ matrix.composer-flag }}"
 
@@ -38,28 +31,20 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
 
-      - name: Validate composer.json and composer.lock
+      - name: Validate composer.json
         run: composer validate --strict
 
       - name: Check PHP Version
         run: php -v
 
       - name: Symfony version # run every time except for dependencies with SF 7.1 (locked in composer)
-        if: ${{ matrix.grumphp-testsuite == 'no-analyse' }}
         run: composer config extra.symfony.require ${{ matrix.symfony-version }}
 
-      - name: Composer update # run for everything except php 8.2 or SF 7.1 locked in composer.lock
-        if: ${{ matrix.grumphp-testsuite == 'no-analyse' }}
-        run: |
-          composer install # run because of symfony/flex
-          composer update --prefer-dist --no-interaction
-
-      - name: Composer install # only run for locked dependencies with php 8.2 or SF 7.1 (locked in composer)
-        if: ${{ matrix.grumphp-testsuite == 'main' }}
-        run: composer install --prefer-dist --no-interaction
+      - name: Composer update
+        run: composer update --prefer-dist --no-interaction
 
       - name: Run static analysis (GrumPHP)
-        run: composer run-script grumphp${{ matrix.php-version }}${{ matrix.grumphp-flag }}
+        run: composer run-script grumphp${{ matrix.php-version }}
 
       - name: Check vendor licenses
         run: composer run-script lic-check

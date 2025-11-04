@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PixelFederation\CircuitBreakerBundle;
 
+use Override;
 use Psr\Cache\CacheItemPoolInterface;
 
 final class CachedMethodExtractor implements MethodExtractor
 {
-    private const CACHE_KEY = 'pixel_federation_circuit_breaker.circuit_breaker_methods';
+    private const string CACHE_KEY = 'pixel_federation_circuit_breaker.circuit_breaker_methods';
 
     public function __construct(
         private readonly MethodExtractor $decorated,
@@ -16,6 +17,7 @@ final class CachedMethodExtractor implements MethodExtractor
     ) {
     }
 
+    #[Override]
     public function extractFor(string $serviceClass): ServiceMethods
     {
         $repoMethods = $this->extractAll();
@@ -23,13 +25,14 @@ final class CachedMethodExtractor implements MethodExtractor
         return $repoMethods->getForService($serviceClass);
     }
 
+    #[Override]
     public function extractAll(): ServicesMethods
     {
         $item = $this->cache->getItem(self::CACHE_KEY);
 
         if ($item->isHit()) {
-            /** @var ServicesMethods $methods */
             $methods = $item->get();
+            \assert($methods instanceof ServicesMethods);
 
             return $methods;
         }
