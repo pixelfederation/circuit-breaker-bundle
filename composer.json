@@ -41,7 +41,7 @@
     "squizlabs/php_codesniffer": "^4.0",
     "symfony/flex": "^2.3",
     "symfony/framework-bundle": "^7.3",
-    "symfony/monolog-bundle": "^3.7",
+    "symfony/monolog-bundle": "^3.7 || ^4.0",
     "symfony/phpunit-bridge": "^7.3"
   },
   "autoload": {
