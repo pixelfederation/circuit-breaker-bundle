@@ -42,7 +42,7 @@
     "symfony/flex": "^2.3",
     "symfony/framework-bundle": "^7.3",
     "symfony/monolog-bundle": "^3.7 || ^4.0",
-    "symfony/phpunit-bridge": "^7.3"
+    "symfony/phpunit-bridge": "^7.3 || ^8.0"
   },
   "autoload": {
     "psr-4": {
