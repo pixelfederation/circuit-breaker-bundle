@@ -8,15 +8,6 @@ x-php-common: &php-common
     - COMPOSER_MEMORY_LIMIT=-1
 services:
 
-  circuit-breaker-bundle-php83:
-    <<: *php-common
-    container_name: circuit-breaker-bundle-php83
-    build:
-      dockerfile: ./docker/php/Dockerfile
-      context: ./
-      args:
-        PHP_VERSION: 8.3
-
   circuit-breaker-bundle-php84:
     <<: *php-common
     container_name: circuit-breaker-bundle-php84
@@ -26,7 +17,16 @@ services:
       args:
         PHP_VERSION: 8.4
 
+  circuit-breaker-bundle-php85:
+    <<: *php-common
+    container_name: circuit-breaker-bundle-php85
+    build:
+      dockerfile: ./docker/php/Dockerfile
+      context: ./
+      args:
+        PHP_VERSION: 8.5
+
   circuit-breaker-bundle-php-min:
     container_name: circuit-breaker-bundle-php-min
     extends:
-      service: circuit-breaker-bundle-php83
+      service: circuit-breaker-bundle-php84
