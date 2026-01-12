@@ -7,11 +7,6 @@ services:
     autoconfigure: true
     public: false
 
-  PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\TestServiceWithAnnotations:
-    public: true
-    arguments:
-      $logger: '@logger'
-
   PixelFederation\CircuitBreakerBundle\Tests\Functional\app\CircuitBreaker\Service\TestServiceWithAttributes:
     public: true
     arguments:

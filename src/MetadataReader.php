@@ -12,7 +12,7 @@ use ReflectionMethod;
 interface MetadataReader
 {
     /**
-     * @param ReflectionClass<object> $serviceClass
+     * @param ReflectionClass<CircuitBrokenService> $serviceClass
      */
     public function getServiceMetadata(ReflectionClass $serviceClass): ?CircuitBreakerService;
 

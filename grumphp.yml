@@ -4,7 +4,7 @@ grumphp:
   git_hook_variables:
     EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -t circuit-breaker-bundle-php-min'
   testsuites:
-    php8.3:
+    php8.4:
       tasks:
         - phpcs
         - phpmd
@@ -15,7 +15,7 @@ grumphp:
         - shell
         - phpstan
         - psalm
-    php8.4:
+    php8.5:
       tasks:
         - phpcs
         - phpmd

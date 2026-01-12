@@ -15,34 +15,33 @@
     }
   ],
   "require": {
-    "php": ">=8.3",
+    "php": ">=8.4",
     "ackintosh/ganesha": "^4.0",
     "beberlei/assert": "^3.3",
-    "doctrine/annotations": "^2.0",
-    "symfony/cache": "^7.3",
-    "symfony/config": "^7.3",
-    "symfony/dependency-injection": "^7.3",
-    "symfony/filesystem": "^7.3",
-    "symfony/http-kernel": "^7.3",
+    "symfony/cache": "^7.4 || ^8.0",
+    "symfony/config": "^7.4 || ^8.0",
+    "symfony/dependency-injection": "^7.4 || ^8.0",
+    "symfony/filesystem": "^7.4 || ^8.0",
+    "symfony/http-kernel": "^7.4 || ^8.0",
     "symfony/proxy-manager-bridge": "^6.4"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.2",
-    "madewithlove/license-checker": "^0.10|^1.0|^2.0",
+    "friendsofphp/php-cs-fixer": "^3.92",
+    "madewithlove/license-checker": "^0.10|^1.0",
     "nikic/php-parser": "^5.6",
     "php-parallel-lint/php-parallel-lint": "^1.3",
-    "phpmd/phpmd": "^2.6",
-    "phpro/grumphp": "^2.17",
-    "phpstan/phpstan": "^2.0",
-    "phpunit/phpunit": "^12.0",
-    "pixelfederation/coding-standards": "^5.0",
-    "psalm/phar": "^6.13",
+    "phpmd/phpmd": "^2.15",
+    "phpstan/phpstan": "^2.1",
+    "phpro/grumphp-shim": "2.17.0",
+    "phpunit/phpunit": "^12.5",
+    "pixelfederation/coding-standards": "^5.5",
+    "psalm/phar": "^6.14",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^4.0",
     "symfony/flex": "^2.3",
-    "symfony/framework-bundle": "^7.3",
-    "symfony/monolog-bundle": "^3.7 || ^4.0",
-    "symfony/phpunit-bridge": "^7.3 || ^8.0"
+    "symfony/framework-bundle": "^7.4 || ^8.0",
+    "symfony/monolog-bundle": "^4.0",
+    "symfony/phpunit-bridge": "^7.4 || ^8.0"
   },
   "autoload": {
     "psr-4": {
@@ -58,14 +57,14 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
-      "phpro/grumphp": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpro/grumphp-shim": true,
       "symfony/flex": true
     }
   },
   "scripts": {
-    "grumphp8.3": "grumphp run --testsuite=php8.3",
     "grumphp8.4": "grumphp run --testsuite=php8.4",
+    "grumphp8.5": "grumphp run --testsuite=php8.5",
     "lic-check": "license-checker check",
     "phpcs": "phpcs --standard=phpcs.ruleset.xml src",
     "phpcbf": "phpcbf --standard=phpcs.ruleset.xml --extensions=php --tab-width=4 -sp src tests",

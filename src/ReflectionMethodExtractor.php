@@ -236,7 +236,7 @@ final class ReflectionMethodExtractor implements MethodExtractor
     }
 
     /**
-     * @param ReflectionClass<object> $serviceClass
+     * @param ReflectionClass<CircuitBrokenService> $serviceClass
      */
     private function createConfiguration(ReflectionClass $serviceClass): CircuitBreakerConfiguration
     {

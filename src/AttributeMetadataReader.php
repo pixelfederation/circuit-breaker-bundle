@@ -13,9 +13,6 @@ use RuntimeException;
 
 final class AttributeMetadataReader implements MetadataReader
 {
-    /**
-     * @param ReflectionClass<object> $serviceClass
-     */
     #[Override]
     public function getServiceMetadata(ReflectionClass $serviceClass): ?CircuitBreakerService
     {
