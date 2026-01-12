@@ -8,8 +8,8 @@
   <!-- Show progress, show the error codes for each message (source). -->
   <arg value="ps"/>
   <description>PixelFederation rule set.</description>
-  <config name="testVersion" value="8.3"/>
-  <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.83.non-ddd.xml">
+  <config name="testVersion" value="8.4"/>
+  <rule ref="vendor/pixelfederation/coding-standards/phpcs.ruleset.84.non-ddd.xml">
     <exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
   </rule>
 

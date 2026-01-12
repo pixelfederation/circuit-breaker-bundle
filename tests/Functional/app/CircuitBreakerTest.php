@@ -30,7 +30,7 @@ final class CircuitBreakerTest extends TestCase
         array $expectedCalls,
         int $expectedFailures,
     ): void {
-        /** @var TestServiceWithAnnotations|TestServiceWithAttributes $service */
+        /** @var TestServiceWithAttributes $service */
         $service = self::getContainer()->get($serviceClass);
 
         if ($argument !== null) {
@@ -50,32 +50,6 @@ final class CircuitBreakerTest extends TestCase
     public static function dataProvider(): array
     {
         return [
-            [
-                TestServiceWithAnnotations::class,
-                'runWithStackedFallbacks',
-                null,
-                [
-                    'runWithStackedFallbacks:something',
-                    'fallback:something',
-                    'fallbackForFallback:something',
-                    'lastFallback:something',
-                ],
-                3,
-            ],
-            [
-                TestServiceWithAnnotations::class,
-                'runWithDefaultFalback',
-                null,
-                ['runWithDefaultFalback', 'defaultFallback'],
-                1,
-            ],
-            [
-                TestServiceWithAnnotations::class,
-                'runWithIgnoredFallback',
-                'abc',
-                ['runWithIgnoredFallback:abc', 'fallback:abc', 'fallbackForFallback:abc', 'lastFallback:abc'],
-                2,
-            ],
             [
                 TestServiceWithAttributes::class,
                 'runWithStackedFallbacks',
