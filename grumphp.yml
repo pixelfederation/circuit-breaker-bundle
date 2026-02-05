@@ -7,7 +7,6 @@ grumphp:
     php8.4:
       tasks:
         - phpcs
-        - phpmd
         - phpcsfixer2
         - phpparser
         - phplint
@@ -18,7 +17,6 @@ grumphp:
     php8.5:
       tasks:
         - phpcs
-        - phpmd
         - phpcsfixer2
         - phpparser
         - phplint
@@ -36,8 +34,6 @@ grumphp:
         - tests/
       sniffs: [ ]
       triggered_by: [ php ]
-    phpmd:
-      ruleset: [ 'phpmd.ruleset.xml' ]
     phpcsfixer2:
       cache_file: '.php-cs-fixer.cache'
       allow_risky: true
