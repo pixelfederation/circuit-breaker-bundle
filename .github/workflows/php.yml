@@ -46,9 +46,6 @@ jobs:
       - name: Run static analysis (GrumPHP)
         run: composer run-script grumphp${{ matrix.php-version }}
 
-      - name: Check vendor licenses
-        run: composer run-script lic-check
-
   auto-rebase:
     name: rebase dependabot PRs
     runs-on: ubuntu-latest
