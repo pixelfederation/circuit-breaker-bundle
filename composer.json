@@ -1,6 +1,6 @@
 {
   "name": "pixelfederation/circuit-breaker-bundle",
-  "description": "An analogous bundle to Java's Hystrix in PHP world.",
+  "description": "A Symfony bundle for implementing the circuit breaker pattern using Ganesha.",
   "license": "BSD-3-Clause",
   "type": "library",
   "authors": [
@@ -13,7 +13,11 @@
       "email": "mfris@pixelfederation.com"
     }
   ],
-  "homepage": "https://github.com",
+  "homepage": "https://github.com/pixelfederation/circuit-breaker-bundle",
+  "support": {
+    "issues": "https://github.com/pixelfederation/circuit-breaker-bundle/issues",
+    "source": "https://github.com/pixelfederation/circuit-breaker-bundle"
+  },
   "require": {
     "php": ">=8.4",
     "ackintosh/ganesha": "^4.0",
