@@ -12,9 +12,6 @@ use ProxyManager\Signature\Exception\InvalidSignatureException;
 use ProxyManager\Signature\Exception\MissingSignatureException;
 use ReflectionClass;
 
-/**
- * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
- */
 // phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint
 final class Instantiator
 {

@@ -9,6 +9,9 @@ use PixelFederation\CircuitBreakerBundle\Bridge\Symfony\DependencyInjection\Comp
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @psalm-suppress DeprecatedInterface
+ */
 final class PixelFederationCircuitBreakerBundle extends Bundle
 {
     #[Override]

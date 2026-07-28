@@ -9,3 +9,4 @@ docker-compose.override.yml
 mutagen.yml.lock
 composer.lock
 tests/Functional/app/var/*
+/tests/Functional/app/config/reference.php

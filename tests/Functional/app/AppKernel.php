@@ -46,7 +46,7 @@ final class AppKernel extends Kernel
     }
 
     /**
-     * @return mixed|BundleInterface[]
+     * @return iterable<BundleInterface>
      * @throws RuntimeException
      */
     public function registerBundles(): iterable
@@ -55,7 +55,13 @@ final class AppKernel extends Kernel
             throw new RuntimeException(sprintf('The bundles file "%s" does not exist.', $filename));
         }
 
-        return include $filename;
+        $bundles = include $filename;
+
+        foreach ($bundles as $class => $environments) {
+            if (($environments[$this->environment] ?? $environments['all'] ?? false) === true) {
+                yield new $class();
+            }
+        }
     }
 
     public function getProjectDir(): string

@@ -7,14 +7,13 @@ namespace PixelFederation\CircuitBreakerBundle\Tests\Functional;
 use Exception;
 use InvalidArgumentException;
 use PixelFederation\CircuitBreakerBundle\Tests\Functional\app\AppKernel;
+use PixelFederation\CircuitBreakerBundle\Tests\Functional\CompatibleKernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-abstract class TestCase extends KernelTestCase
+abstract class TestCase extends CompatibleKernelTestCase
 {
     private static ?Application $application = null;
 
@@ -84,15 +83,6 @@ abstract class TestCase extends KernelTestCase
             $options['environment'] ?? strtolower((string) $options['test_case']),
             $options['debug'] ?? true
         );
-    }
-
-    /**
-     * @throws Exception
-     */
-    protected static function runCommand(string $command): void
-    {
-        $command = sprintf('%s --quiet', $command);
-        self::getApplication()->run(new StringInput($command));
     }
 
     protected static function bootTestKernel(?string $rootConfig = null): void

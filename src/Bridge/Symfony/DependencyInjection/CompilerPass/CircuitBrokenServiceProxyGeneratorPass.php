@@ -19,9 +19,6 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\Reference;
 use UnexpectedValueException;
 
-/**
- * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
- */
 final class CircuitBrokenServiceProxyGeneratorPass implements CompilerPassInterface
 {
     /**
