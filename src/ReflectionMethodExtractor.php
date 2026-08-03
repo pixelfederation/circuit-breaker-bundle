@@ -13,9 +13,6 @@ use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
 
-/**
- * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
- */
 final class ReflectionMethodExtractor implements MethodExtractor
 {
     /**
@@ -98,9 +95,6 @@ final class ReflectionMethodExtractor implements MethodExtractor
     /**
      * @param ReflectionClass<CircuitBrokenService> $invokerReflClass
      * @throws InvalidArgumentException
-     * @SuppressWarnings("PHPMD.CyclomaticComplexity")
-     * @SuppressWarnings("PHPMD.NPathComplexity")
-     * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
      */
     //phpcs:ignore SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh
     private function extractFallbackMethod(

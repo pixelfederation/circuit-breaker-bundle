@@ -1,30 +1,30 @@
 grumphp:
-  stop_on_failure: true
+  ascii:
+    failed: vendor/pixelfederation/coding-standards/assets/grumphp/pixel-bad.txt
+    succeeded: vendor/pixelfederation/coding-standards/assets/grumphp/pixel-good.txt
+  stop_on_failure: false
+  fixer:
+    enabled: false
   process_timeout: 600
   git_hook_variables:
     EXEC_GRUMPHP_COMMAND: './bin/grumphp_hooks/environment_spinup && docker exec -t circuit-breaker-bundle-php-min'
   testsuites:
     php8.4:
-      tasks:
+      tasks: &tasks
         - phpcs
         - phpcsfixer2
-        - phpparser
         - phplint
-        - phpunit
-        - shell
+        - phpparser
         - phpstan
+        - phpunit
         - psalm
+        - xmllint_extended
+        - yamllint
     php8.5:
-      tasks:
-        - phpcs
-        - phpcsfixer2
-        - phpparser
-        - phplint
-        - phpunit
-        - shell
-        - phpstan
-        - psalm
+      tasks: *tasks
   tasks:
+    composer: ~
+    composer_normalize: ~
     phpcs:
       standard: 'phpcs.ruleset.xml'
       tab_width: 4
@@ -43,11 +43,12 @@ grumphp:
       verbose: false
       diff: true
       triggered_by: [ 'php' ]
+    phplint: ~
     phpparser:
       ignore_patterns:
         - tests/
         - src/Bridge/Symfony/Command/GenerateCircuitBrokenProxiesCacheWarmer.php
-      kind: php7
+      kind: php83
       visitors:
         declare_strict_types: ~
         no_exit_statements: ~
@@ -59,10 +60,6 @@ grumphp:
           blacklist:
             - 'Dumper::dump'
       triggered_by: [ php ]
-    phplint:
-      exclude: [ 'vendor' ]
-    phpunit: ~
-    shell: ~
     phpstan:
       autoload_file: ~
       configuration: 'phpstan.neon'
@@ -71,6 +68,7 @@ grumphp:
       ignore_patterns:
         - tests/
       triggered_by: [ 'php' ]
+    phpunit: ~
     psalm:
       config: psalm.xml
       ignore_patterns:
@@ -79,3 +77,15 @@ grumphp:
       report: ~
       triggered_by: [ 'php' ]
       show_info: true
+    xmllint_extended:
+      ignore_patterns: [ ]
+      load_from_net: true
+      x_include: true
+      dtd_validation: true
+      scheme_validation: true
+      triggered_by: [ 'xml' ]
+    yamllint:
+      parse_constant: true
+      parse_custom_tags: true
+  extensions:
+    - PixelFederation\CodingStandards\GrumPHP\ExtensionLoader

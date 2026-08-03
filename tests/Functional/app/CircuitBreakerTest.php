@@ -18,8 +18,8 @@ final class CircuitBreakerTest extends TestCase
 
         apcu_clear_cache();
         self::bootTestKernel();
-        self::runCommand('cache:clear --no-warmup');
-        self::runCommand('cache:warmup --no-debug');
+        self::runCommand('cache:clear', ['--no-warmup' => true]);
+        self::runCommand('cache:warmup', ['--no-debug' => true]);
     }
 
     #[DataProvider('dataProvider')]

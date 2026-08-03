@@ -1,4 +1,3 @@
-version: '3.5'
 x-php-common: &php-common
   volumes:
     - .:/srv/www:delegated

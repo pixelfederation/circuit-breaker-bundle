@@ -15,4 +15,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     mv composer.phar /usr/local/bin/composer && \
     unlink composer-setup.php
 
+RUN git config --global --add safe.directory /srv/www
+
 WORKDIR /srv/www

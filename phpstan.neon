@@ -1,12 +1,5 @@
 parameters:
   level: max
   treatPhpDocTypesAsCertain: false
-  ignoreErrors:
-#    - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)#'
-#    - '#Cannot call method end\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null#'
   excludePaths:
     - tests/*
-    - src/Bridge/Symfony/Command/GenerateCircuitBrokenProxiesCacheWarmer.php
-    - src/ReflectionMethodExtractor.php
-
-  typeAliases:

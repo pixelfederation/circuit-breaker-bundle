@@ -5,7 +5,7 @@ declare(strict_types=1);
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
-return (new Config())
+return new Config()
     ->setRiskyAllowed(true)
     ->setRules([
         'array_syntax' => [
