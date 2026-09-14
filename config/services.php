@@ -76,6 +76,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('kernel.cache_clearer');
 
     $services->set(GenerateCircuitBrokenProxiesCacheWarmer::class)
+        ->arg('$cacheDirectory', '%pixel_federation_circuit_breaker.proxy_cache_dir%')
+        ->arg('$filesystem', inline_service(Filesystem::class))
         ->arg('$proxyGenerator', service(Generator::class))
         ->tag('kernel.cache_warmer');
 
